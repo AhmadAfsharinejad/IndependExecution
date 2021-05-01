@@ -1,11 +1,9 @@
 ﻿namespace IndependExecution.Interfaces.Core
 {
-    public interface IDataFlow<TNode, TLink, TProgress, TNotify> :
-        IEexute<TNode, TLink, TProgress>,
-        IConfig<TNode, TNotify>,
-        IGraph<TNode, TLink, TNotify>
-        where TNode : INode
-        where TLink : ILink<TNode>
+    public interface IDataFlow<TProgress, TNotify> :
+        IEexute<TProgress>,
+        IConfig<TNotify>,
+        IGraph<TNotify>
     {
         //mogheye load
         object GetDataFlow();

@@ -1,8 +1,8 @@
 ﻿namespace IndependExecution.Interfaces.Core
 {
-    public interface ILink<TNode>
+    public interface ILink
     {
-        TNode Source { get; }
-        TNode Target { get; }
+        INode Source { get; }
+        INode Target { get; }
     }
 }

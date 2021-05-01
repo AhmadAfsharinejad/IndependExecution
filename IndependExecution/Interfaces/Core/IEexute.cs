@@ -3,17 +3,15 @@ using System.Collections.Generic;
 
 namespace IndependExecution.Interfaces.Core
 {
-    public interface IEexute<TNode, TLink, TProgress>
-        where TNode : INode
-        where TLink : ILink<TNode>
+    public interface IEexute<TProgress>
     {
         IProgress<TProgress> Progress { get; }
         void RunAll();
         void CancelAll();
-        void Run(IEnumerable<TNode> nodes);
-        void Cancel(IEnumerable<TNode> nodes);
-        void Invalid(IEnumerable<TNode> nodes);
-        void Stop(IEnumerable<TNode> nodes);
+        void Run(IEnumerable<INode> nodes);
+        void Cancel(IEnumerable<INode> nodes);
+        void Invalid(IEnumerable<INode> nodes);
+        void Stop(IEnumerable<INode> nodes);
 
         //Tabe haye dge chejori mishand?
         //melse gettable dataflow
