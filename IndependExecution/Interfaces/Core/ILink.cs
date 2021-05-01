@@ -4,5 +4,6 @@
     {
         INode Source { get; }
         INode Target { get; }
+        string Id { get; }
     }
 }
