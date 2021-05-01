@@ -5,6 +5,5 @@
         INode Source { get; }
         INode Target { get; }
         string Id { get; }
-        string Id2 { get; }
     }
 }
