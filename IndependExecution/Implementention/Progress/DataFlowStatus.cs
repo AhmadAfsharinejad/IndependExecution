@@ -6,9 +6,12 @@ namespace IndependExecution.Implementention.Progress
     {
         public List<NodeStatus> Nodes { get; }
 
+        public List<LinkStatus> Links { get; }
+        
         public DataFlowStatus()
         {
             this.Nodes = new List<NodeStatus>();
+            Links = new List<LinkStatus>();
         }
     }
 }

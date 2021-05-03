@@ -5,11 +5,14 @@ using IndependExecution.Sample.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IndependExecution.Implementention.Progress;
 
 namespace IndependExecution.Sample
 {
     public class DataFlowRunner
     {
+        private List<NodeStatus> _nodeStatusList;
+        
         public void Run()
         {
             var dataFlowProgress = new DataFlowProgress();
@@ -53,15 +56,20 @@ namespace IndependExecution.Sample
 
             //dataFlow.AddLink(sakhtarNode, zakhireNode, sakhtarMaps.First());
 
+            while (_nodeStatusList is null) ;
+            var nodeIds = _nodeStatusList.Select(node => node.Id).ToList();
 
-            dataFlowMediator.Run(scenario, new RunRequest() { NodeIds = new List<string>() { "0" } });
+            dataFlowMediator.Run(scenario, new RunRequest() { NodeIds = nodeIds });
         }
 
         private void DataFlowProgress_ProgressChanged(object sender, Implementention.Progress.DataFlowStatus e)
         {
             Console.WriteLine("\\\\\\\\\\\\\\\\");
             foreach (var node in e.Nodes)
+            {
+                _nodeStatusList = e.Nodes.ToList();
                 Console.WriteLine(string.Join("\n", e.Nodes.Select(x => x.ToString())));
+            }
         }
     }
 }

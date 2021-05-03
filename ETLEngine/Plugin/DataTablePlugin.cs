@@ -21,7 +21,7 @@ namespace IndependExecution.Sample.Plugin
         {
             Console.WriteLine($"Execute DataTablePlugin, id:{Id}");
 
-            return null;
+            return Task.FromResult<Dictionary<string, IBaseTable>>(null);
         }
     }
 }

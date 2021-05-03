@@ -2,7 +2,7 @@
 {
     public interface IMapLink
     {
-        string Name { get; }
-        string Id { get;  }
+        public string Id { get;  }
+        public string Name { get; }
     }
 }

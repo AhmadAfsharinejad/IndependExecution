@@ -16,6 +16,11 @@ namespace IndependExecution.Implementention.Core
         {
             scenarioContainer.GetDataFlow(scenario).AddNode(addNodeRequest);
         }
+        
+        public void AddLink(IScenario scenario, AddLinkRequest addLinkRequest)
+        {
+            scenarioContainer.GetDataFlow(scenario).AddLink(addLinkRequest);
+        }
 
         public void Run(IScenario scenario, RunRequest runRequest)
         {

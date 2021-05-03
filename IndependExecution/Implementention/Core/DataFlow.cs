@@ -30,9 +30,26 @@ namespace IndependExecution.Implementention.Core
             this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged1;
         }
 
-        public void AddLink(INode source, INode target, IMapLink maplink)
+        public void AddLink(AddLinkRequest addLinkRequest)
         {
-            throw new NotImplementedException();
+            var linkId = GenerateLinkId();
+            dataFlowFacade.AddLink(linkId, addLinkRequest.SourceId, addLinkRequest.TargetId /*, TODO fix maplinks*/);
+            AddLinkStatuses(addLinkRequest, linkId);
+            progress.Report(DataFlowStatus);
+        }
+
+        private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)
+        {
+            DataFlowStatus.Links.Add(new LinkStatus(linkId,
+                addLinkRequest.SourceId,
+                addLinkRequest.TargetId,
+                addLinkRequest.SourceMapLink,
+                addLinkRequest.TargetMapLink));
+        }
+
+        private string GenerateLinkId()
+        {
+            return Guid.NewGuid().ToString();
         }
 
         public void AddNode(AddNodeRequest addNodeRequest)
