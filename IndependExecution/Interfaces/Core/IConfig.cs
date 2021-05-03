@@ -1,9 +1,11 @@
-﻿namespace IndependExecution.Interfaces.Core
+﻿using System.Collections.Generic;
+
+namespace IndependExecution.Interfaces.Core
 {
-    public interface IConfig<TNotify>
+    public interface IConfig
     {
-        INotifier<TNotify> Notifier { get; }
         void ChangeConfig<TConfig>(INode node, TConfig config);
-        TConfig GetConfig<TConfig>(INode node);
+        IPluginConfig<TConfig> GetConfig<TConfig>(INode node);
+        List<IMapLink> GetMaps(INode node);
     }
 }

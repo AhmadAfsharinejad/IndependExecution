@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace IndependExecution.Interfaces.Core
 {
-    public interface IEexute<TProgress>
+    public interface IEexute
     {
-        IProgress<TProgress> Progress { get; }
         void RunAll();
         void CancelAll();
         void Run(IEnumerable<INode> nodes);

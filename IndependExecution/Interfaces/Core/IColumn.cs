@@ -1,8 +1,9 @@
 ﻿namespace IndependExecution.Interfaces.Core
 {
-    public interface INode
+    public interface IColumn
     {
         string Id { get; }
-        string TypeId { get; }
+        string Name { get; }
+        string Type { get; }
     }
 }
