@@ -10,6 +10,7 @@ namespace IndependExecution.Sample
             df.Run();
 
             Console.WriteLine("Hello World!");
+            Console.ReadLine();
         }
     }
 }

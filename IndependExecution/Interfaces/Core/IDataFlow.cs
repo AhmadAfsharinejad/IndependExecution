@@ -1,7 +1,7 @@
 ﻿namespace IndependExecution.Interfaces.Core
 {
     public interface IDataFlow :
-        IEexute,
+        IExecute,
         IConfig,
         IGraph
     {

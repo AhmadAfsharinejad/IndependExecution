@@ -1,12 +1,13 @@
-﻿using System;
+﻿using IndependExecution.Implementention.Progress;
+using System;
 
 namespace IndependExecution.Progress
 {
-    public class DataFlowProgress : IProgress<int>
+    public class DataFlowProgress : Progress<DataFlowStatus>, IProgress<DataFlowStatus>
     {
-        public void Report(int value)
+        public void Report(DataFlowStatus value)
         {
-            throw new NotImplementedException();
+            this.OnReport(value);
         }
     }
 }

@@ -1,17 +1,33 @@
-﻿using IndependExecution.Interfaces.Core;
-using IndependExecution.Progress;
+﻿using IndependExecution.Dto;
+using IndependExecution.Implementention.Progress;
+using IndependExecution.Interfaces.Core;
+using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
+using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IndependExecution.Implementention.Core
 {
     public class DataFlow : IDataFlow
     {
-        private readonly DataFlowProgress progress;
+        private readonly IProgress<DataFlowStatus> progress;
+        private readonly IDataFlowFacade<string, IBaseTable, string> dataFlowFacade;
+        private readonly IPluginFactory pluginFactory;
+        private readonly Progress<NodeStateChange<string>> nodeProgress;
+        private readonly DataFlowStatus DataFlowStatus;
 
-        public DataFlow(DataFlowProgress progress)
+        public DataFlow(IProgress<DataFlowStatus> progress,
+            IDataFlowFacade<string, IBaseTable, string> dataFlowFacade,
+            IPluginFactory pluginExecutableFactory)
         {
             this.progress = progress;
+            this.dataFlowFacade = dataFlowFacade;
+            this.pluginFactory = pluginExecutableFactory;
+            this.DataFlowStatus = new DataFlowStatus();
+            this.nodeProgress = new Progress<NodeStateChange<string>>();
+
+            this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged1;
         }
 
         public void AddLink(INode source, INode target, IMapLink maplink)
@@ -19,9 +35,12 @@ namespace IndependExecution.Implementention.Core
             throw new NotImplementedException();
         }
 
-        public void AddNode(INode node)
+        public void AddNode(AddNodeRequest addNodeRequest)
         {
-            throw new NotImplementedException();
+            var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
+            dataFlowFacade.AddNode(plugin);
+            AddNodeToStatus(addNodeRequest, plugin.Id);
+            progress.Report(DataFlowStatus);
         }
 
         public void Cancel(IEnumerable<INode> nodes)
@@ -74,14 +93,18 @@ namespace IndependExecution.Implementention.Core
             throw new NotImplementedException();
         }
 
-        public void Run(IEnumerable<INode> nodes)
+        public void Run(RunRequest runRequest)
         {
-            throw new NotImplementedException();
+            foreach (var nodeId in runRequest.NodeIds)
+            {
+
+                dataFlowFacade.Run(nodeId);
+            }
         }
 
         public void RunAll()
         {
-            throw new NotImplementedException();
+
         }
 
         public void Stop(IEnumerable<INode> nodes)
@@ -89,5 +112,19 @@ namespace IndependExecution.Implementention.Core
             throw new NotImplementedException();
         }
 
+        private void NodeProgress_ProgressChanged1(object sender, NodeStateChange<string> e)
+        {
+            DataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
+            progress.Report(DataFlowStatus);
+        }
+
+        private void AddNodeToStatus(AddNodeRequest addNodeRequest, string id)
+        {
+            DataFlowStatus.Nodes.Add(new NodeStatus(id, addNodeRequest.TypeId)
+            {
+                State = "Idle",
+                Location = addNodeRequest.Location,
+            });
+        }
     }
 }
