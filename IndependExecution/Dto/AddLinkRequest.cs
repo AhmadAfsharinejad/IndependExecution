@@ -4,10 +4,10 @@ namespace IndependExecution.Dto
 {
     public class AddLinkRequest
     {
-        public string SourceId { get; }
-        public IMapLink SourceMapLink { get; }
+        public string SourceId { get; set; }
+        public IMapLink SourceMapLink { get; set; }
         
-        public string TargetId { get; }
-        public IMapLink TargetMapLink { get; }
+        public string TargetId { get; set; }
+        public IMapLink TargetMapLink { get; set; }
     }
 }

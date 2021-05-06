@@ -1,4 +1,5 @@
-﻿using IndependExecution.Interfaces.Core;
+﻿using ETLEngine.Implementention.Core;
+using IndependExecution.Interfaces.Core;
 using IndependExecution.Progress;
 using IndependExecution.Sample.Factory;
 using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
@@ -25,7 +26,8 @@ namespace IndependExecution.Implementention.Core
 
             var pluginFactory = new PluginFactory();
             var dataFlowFacade = new DataFlowFacade<string, IBaseTable, string>();
-            var dataFlow = new DataFlow(dataFlowProgress, dataFlowFacade, pluginFactory);
+            var pluginContainer = new PluginContainer();
+            var dataFlow = new DataFlow(dataFlowProgress, dataFlowFacade, pluginFactory, pluginContainer);
             dataFlows[scenario.Id] = dataFlow;
         }
 

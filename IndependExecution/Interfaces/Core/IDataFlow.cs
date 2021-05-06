@@ -1,12 +1,12 @@
-﻿namespace IndependExecution.Interfaces.Core
+﻿using IndependExecution.Implementention.Progress;
+
+namespace IndependExecution.Interfaces.Core
 {
     public interface IDataFlow :
         IExecute,
-        IConfig,
+        IDataFlowConfigurable,
         IGraph
     {
-        //mogheye load
-        object GetDataFlow();
-        void Load(string id);
+        DataFlowStatus GetDataFlow();
     }
 }

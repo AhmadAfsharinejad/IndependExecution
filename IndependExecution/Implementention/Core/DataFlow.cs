@@ -1,6 +1,7 @@
 ﻿using IndependExecution.Dto;
 using IndependExecution.Implementention.Progress;
 using IndependExecution.Interfaces.Core;
+using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using System;
@@ -15,19 +16,22 @@ namespace IndependExecution.Implementention.Core
         private readonly IDataFlowFacade<string, IBaseTable, string> dataFlowFacade;
         private readonly IPluginFactory pluginFactory;
         private readonly Progress<NodeStateChange<string>> nodeProgress;
-        private readonly DataFlowStatus DataFlowStatus;
+        private readonly DataFlowStatus dataFlowStatus;
+        private readonly IPluginContainer pluginContainer;
 
         public DataFlow(IProgress<DataFlowStatus> progress,
             IDataFlowFacade<string, IBaseTable, string> dataFlowFacade,
-            IPluginFactory pluginExecutableFactory)
+            IPluginFactory pluginExecutableFactory,
+            IPluginContainer pluginContainer)
         {
             this.progress = progress;
             this.dataFlowFacade = dataFlowFacade;
             this.pluginFactory = pluginExecutableFactory;
-            this.DataFlowStatus = new DataFlowStatus();
+            this.dataFlowStatus = new DataFlowStatus();
             this.nodeProgress = new Progress<NodeStateChange<string>>();
 
             this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged1;
+            this.pluginContainer = pluginContainer;
         }
 
         public void AddLink(AddLinkRequest addLinkRequest)
@@ -35,29 +39,17 @@ namespace IndependExecution.Implementention.Core
             var linkId = GenerateLinkId();
             dataFlowFacade.AddLink(linkId, addLinkRequest.SourceId, addLinkRequest.TargetId /*, TODO fix maplinks*/);
             AddLinkStatuses(addLinkRequest, linkId);
-            progress.Report(DataFlowStatus);
-        }
-
-        private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)
-        {
-            DataFlowStatus.Links.Add(new LinkStatus(linkId,
-                addLinkRequest.SourceId,
-                addLinkRequest.TargetId,
-                addLinkRequest.SourceMapLink,
-                addLinkRequest.TargetMapLink));
-        }
-
-        private string GenerateLinkId()
-        {
-            return Guid.NewGuid().ToString();
+            progress.Report(dataFlowStatus);
         }
 
         public void AddNode(AddNodeRequest addNodeRequest)
         {
             var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
+            plugin.Location = addNodeRequest.Location;
             dataFlowFacade.AddNode(plugin);
-            AddNodeToStatus(addNodeRequest, plugin.Id);
-            progress.Report(DataFlowStatus);
+            pluginContainer.AddPlugin(plugin);
+            AddNodeToStatus(plugin, plugin.Id);
+            progress.Report(dataFlowStatus);
         }
 
         public void Cancel(IEnumerable<INode> nodes)
@@ -70,22 +62,26 @@ namespace IndependExecution.Implementention.Core
             throw new NotImplementedException();
         }
 
-        public void ChangeConfig<TConfig>(INode node, TConfig config)
+        public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            throw new NotImplementedException();
+            pluginContainer.GetPlugin(changeConfigRequest.nodeId).ChangeConfig(changeConfigRequest.config);
         }
 
-        public IPluginConfig<TConfig> GetConfig<TConfig>(INode node)
+        public IDataFlowPluginConfig GetConfig(string nodeId)
         {
-            throw new NotImplementedException();
+            var config = pluginContainer.GetPlugin(nodeId).GetConfig();
+            return new DataFlowPluginConfig()
+            {
+                Config = config,
+            };
         }
 
-        public object GetDataFlow()
+        public DataFlowStatus GetDataFlow()
         {
-            throw new NotImplementedException();
+            return dataFlowStatus;
         }
 
-        public List<IMapLink> GetMaps(INode node)
+        public List<IMapLink> GetMaps(string nodeId)
         {
             throw new NotImplementedException();
         }
@@ -114,7 +110,7 @@ namespace IndependExecution.Implementention.Core
         {
             foreach (var nodeId in runRequest.NodeIds)
             {
-
+                //TODO run list id begire
                 dataFlowFacade.Run(nodeId);
             }
         }
@@ -131,17 +127,31 @@ namespace IndependExecution.Implementention.Core
 
         private void NodeProgress_ProgressChanged1(object sender, NodeStateChange<string> e)
         {
-            DataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
-            progress.Report(DataFlowStatus);
+            dataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
+            progress.Report(dataFlowStatus);
         }
 
-        private void AddNodeToStatus(AddNodeRequest addNodeRequest, string id)
+        private void AddNodeToStatus(IPlugin plugin, string id)
         {
-            DataFlowStatus.Nodes.Add(new NodeStatus(id, addNodeRequest.TypeId)
+            dataFlowStatus.Nodes.Add(new NodeStatus(id, plugin.TypeId)
             {
                 State = "Idle",
-                Location = addNodeRequest.Location,
+                Location = plugin.Location,
             });
+        }
+
+        private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)
+        {
+            dataFlowStatus.Links.Add(new LinkStatus(linkId,
+                addLinkRequest.SourceId,
+                addLinkRequest.TargetId,
+                addLinkRequest.SourceMapLink,
+                addLinkRequest.TargetMapLink));
+        }
+
+        private string GenerateLinkId()
+        {
+            return Guid.NewGuid().ToString();
         }
     }
 }

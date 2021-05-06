@@ -14,4 +14,8 @@
     <ProjectReference Include="..\IndependExecution\IndependExecution.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Factory\" />
+  </ItemGroup>
+
 </Project>

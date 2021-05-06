@@ -1,4 +1,5 @@
 ﻿using IndependExecution.Dto;
+using IndependExecution.Implementention.Progress;
 using IndependExecution.Interfaces.Core;
 
 namespace IndependExecution.Implementention.Core
@@ -6,6 +7,16 @@ namespace IndependExecution.Implementention.Core
     public class DataFlowMediator
     {
         private readonly IScenarioContainer scenarioContainer;
+
+        public void AddScenario(IScenario scenario)
+        {
+            scenarioContainer.CreateDataFlow(scenario);
+        }
+
+        public DataFlowStatus GetScenario(IScenario scenario)
+        {
+           return scenarioContainer.GetDataFlow(scenario).GetDataFlow();
+        }
 
         public DataFlowMediator(IScenarioContainer scenarioContainer)
         {
@@ -16,7 +27,7 @@ namespace IndependExecution.Implementention.Core
         {
             scenarioContainer.GetDataFlow(scenario).AddNode(addNodeRequest);
         }
-        
+
         public void AddLink(IScenario scenario, AddLinkRequest addLinkRequest)
         {
             scenarioContainer.GetDataFlow(scenario).AddLink(addLinkRequest);
@@ -27,9 +38,14 @@ namespace IndependExecution.Implementention.Core
             scenarioContainer.GetDataFlow(scenario).Run(runRequest);
         }
 
-        public void AddScenario(IScenario scenario)
+        public IDataFlowPluginConfig GetConfig(IScenario scenario, string nodeId)
         {
-            scenarioContainer.CreateDataFlow(scenario);
+            return scenarioContainer.GetDataFlow(scenario).GetConfig(nodeId);
+        }
+
+        public void ChangeConfig(IScenario scenario, ChangeConfigRequest changeConfigRequest)
+        {
+            scenarioContainer.GetDataFlow(scenario).ChangeConfig(changeConfigRequest);
         }
     }
 }

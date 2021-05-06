@@ -22,5 +22,10 @@ namespace IndependExecution.Implementention.Progress
         public string TargetId { get; }
         public IMapLink SourceMapLink { get; }
         public IMapLink TargetMapLink { get; }
+
+        public override string ToString()
+        {
+            return $"{SourceId} ---> {TargetId}";
+        }
     }
 }

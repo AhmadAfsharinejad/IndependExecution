@@ -8,26 +8,26 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IndependExecution.Sample.Plugin
+namespace ETLEngine.Plugin
 {
-    public class DataTablePlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
+    public class SwitchPortPlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
-        public string TypeId => "DataTable";
+        public string TypeId => "SwitchPort";
         public string Location { get; set; }
         public string Note { get; set; }
 
-        private readonly DataTableConfig config;
+        private readonly SwitchPortConfig config;
 
-        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null) 
+        public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
             : base(id, socket, progress)
         {
-            config = new DataTableConfig();
+            config = new SwitchPortConfig();
         }
 
-        public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable> input, 
+        public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable> input,
             CancellationToken cancellationToken)
         {
-            Console.WriteLine($"Execute DataTablePlugin, id:{Id}");
+            Console.WriteLine($"Execute SwitchPort, id:{Id}");
 
             return Task.FromResult<Dictionary<string, IBaseTable>>(null);
         }
@@ -39,15 +39,15 @@ namespace IndependExecution.Sample.Plugin
 
         public void ChangeConfig(IPluginConfig config)
         {
-            config = config as DataTableConfig;
+            config = config as SwitchPortConfig;
         }
     }
 
-    public class DataTableConfig : IPluginConfig
+    public class SwitchPortConfig : IPluginConfig
     {
         public List<string> Columns;
 
-        public DataTableConfig()
+        public SwitchPortConfig()
         {
             Columns = new List<string>();
         }
