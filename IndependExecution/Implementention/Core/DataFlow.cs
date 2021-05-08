@@ -3,6 +3,7 @@ using IndependExecution.Implementention.Progress;
 using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
+using Mohaymen.DataFlowExecutor.Core.Graph.Abstraction;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,14 @@ namespace IndependExecution.Implementention.Core
     public class DataFlow : IDataFlow
     {
         private readonly IProgress<DataFlowStatus> progress;
-        private readonly IDataFlowFacade<string, IBaseTable, string> dataFlowFacade;
+        private readonly IDataFlowFacade<string, IBaseTable, string, IPlugin> dataFlowFacade;
         private readonly IPluginFactory pluginFactory;
         private readonly Progress<NodeStateChange<string>> nodeProgress;
         private readonly DataFlowStatus dataFlowStatus;
         private readonly IPluginContainer pluginContainer;
 
         public DataFlow(IProgress<DataFlowStatus> progress,
-            IDataFlowFacade<string, IBaseTable, string> dataFlowFacade,
+            IDataFlowFacade<string, IBaseTable, string, IPlugin> dataFlowFacade,
             IPluginFactory pluginExecutableFactory,
             IPluginContainer pluginContainer)
         {
@@ -46,9 +47,9 @@ namespace IndependExecution.Implementention.Core
         {
             var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
             plugin.Location = addNodeRequest.Location;
-            dataFlowFacade.AddNode(plugin);
+            dataFlowFacade.AddNode(plugin.plugin);
             pluginContainer.AddPlugin(plugin);
-            AddNodeToStatus(plugin, plugin.Id);
+            AddNodeToStatus(plugin, plugin.plugin.Id);
             progress.Report(dataFlowStatus);
         }
 
@@ -64,12 +65,12 @@ namespace IndependExecution.Implementention.Core
 
         public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            pluginContainer.GetPlugin(changeConfigRequest.nodeId).ChangeConfig(changeConfigRequest.config);
+            pluginContainer.GetPlugin(changeConfigRequest.nodeId).plugin.ChangeConfig(changeConfigRequest.config);
         }
 
         public IDataFlowPluginConfig GetConfig(string nodeId)
         {
-            var config = pluginContainer.GetPlugin(nodeId).GetConfig();
+            var config = pluginContainer.GetPlugin(nodeId).plugin.GetConfig();
             return new DataFlowPluginConfig()
             {
                 Config = config,
