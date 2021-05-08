@@ -30,7 +30,7 @@ namespace IndependExecution.Implementention.Core
             this.dataFlowStatus = new DataFlowStatus();
             this.nodeProgress = new Progress<NodeStateChange<string>>();
 
-            this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged1;
+            this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
             this.pluginContainer = pluginContainer;
         }
 
@@ -125,7 +125,7 @@ namespace IndependExecution.Implementention.Core
             throw new NotImplementedException();
         }
 
-        private void NodeProgress_ProgressChanged1(object sender, NodeStateChange<string> e)
+        private void NodeProgress_ProgressChanged(object sender, NodeStateChange<string> e)
         {
             dataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
             progress.Report(dataFlowStatus);

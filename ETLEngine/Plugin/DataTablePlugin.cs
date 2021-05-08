@@ -15,6 +15,7 @@ namespace IndependExecution.Sample.Plugin
         public string TypeId => "DataTable";
         public string Location { get; set; }
         public string Note { get; set; }
+        //TODO plugin link vorodi khorojisho bege
 
         private readonly DataTableConfig config;
 
