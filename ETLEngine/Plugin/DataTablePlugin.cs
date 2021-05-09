@@ -21,7 +21,7 @@ namespace IndependExecution.Sample.Plugin
         //TODO plugin link vorodi khorojisho bege
         private readonly DataTableConfig config;
 
-        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
+        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange> progress = null)
             : base(id, socket, progress)
         {
             config = new DataTableConfig();

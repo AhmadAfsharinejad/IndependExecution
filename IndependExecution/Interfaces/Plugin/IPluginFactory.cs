@@ -6,6 +6,6 @@ namespace IndependExecution.Interfaces.Core
 {
     public interface IPluginFactory
     {
-        IPlugin GetPlugin(string pluginTypeId, IProgress<NodeStateChange<string>> nodeProgress);
+        IPlugin GetPlugin(string pluginTypeId, IProgress<NodeStateChange> nodeProgress);
     }
 }

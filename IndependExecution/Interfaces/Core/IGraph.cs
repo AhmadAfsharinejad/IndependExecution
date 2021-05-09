@@ -1,4 +1,5 @@
 ﻿using IndependExecution.Dto;
+using IndependExecution.Interfaces.Plugin;
 
 namespace IndependExecution.Interfaces.Core
 {

@@ -23,7 +23,7 @@ namespace ETLEngine.Plugin
         private readonly SwitchPortConfig config;
 
 
-        public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
+        public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange> progress = null)
             : base(id, socket, progress)
         {
             config = new SwitchPortConfig();

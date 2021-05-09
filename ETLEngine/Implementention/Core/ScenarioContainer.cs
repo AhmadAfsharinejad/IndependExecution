@@ -27,8 +27,7 @@ namespace IndependExecution.Implementention.Core
                 throw new Exception();
 
             var pluginFactory = new PluginFactory();
-            var dag = new Dag<string, IBaseTable, string, IPlugin>();
-            var dataFlowFacade = new DataFlowFacade<string, IBaseTable, string, IPlugin>(dag);
+            var dataFlowFacade = new DataFlowFacade<IBaseTable, IPlugin, ILink>();
             var pluginContainer = new PluginContainer();
             var dataFlow = new DataFlow(dataFlowProgress, dataFlowFacade, pluginFactory, pluginContainer);
             dataFlows[scenario.Id] = dataFlow;

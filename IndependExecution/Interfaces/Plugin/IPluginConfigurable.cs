@@ -3,7 +3,7 @@ using Mohaymen.DataFlowExecutor.Core.Graph.Abstraction;
 
 namespace IndependExecution.Interfaces.Plugin
 {
-    public interface IPluginConfigurable : IPlugin<string, IBaseTable>
+    public interface IPluginConfigurable : IPlugin<IBaseTable>
     {
         void ChangeConfig(IPluginConfig config);
         IPluginConfig GetConfig();

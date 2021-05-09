@@ -10,7 +10,7 @@ namespace IndependExecution.Sample.Factory
 {
     public class PluginFactory : IPluginFactory
     {
-        public IPlugin GetPlugin(string pluginTypeId, IProgress<NodeStateChange<string>> nodeProgress)
+        public IPlugin GetPlugin(string pluginTypeId, IProgress<NodeStateChange> nodeProgress)
         {
             //TODO
             if (pluginTypeId == "DataTable")

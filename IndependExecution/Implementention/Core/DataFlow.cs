@@ -13,14 +13,14 @@ namespace IndependExecution.Implementention.Core
     public class DataFlow : IDataFlow
     {
         private readonly IProgress<DataFlowStatus> progress;
-        private readonly IDataFlowFacade<string, IBaseTable, string, IPlugin> dataFlowFacade;
+        private readonly IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade;
         private readonly IPluginFactory pluginFactory;
-        private readonly Progress<NodeStateChange<string>> nodeProgress;
+        private readonly Progress<NodeStateChange> nodeProgress;
         private readonly DataFlowStatus dataFlowStatus;
         private readonly IPluginContainer pluginContainer;
 
         public DataFlow(IProgress<DataFlowStatus> progress,
-            IDataFlowFacade<string, IBaseTable, string, IPlugin> dataFlowFacade,
+            IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade,
             IPluginFactory pluginExecutableFactory,
             IPluginContainer pluginContainer)
         {
@@ -28,7 +28,7 @@ namespace IndependExecution.Implementention.Core
             this.dataFlowFacade = dataFlowFacade;
             this.pluginFactory = pluginExecutableFactory;
             this.dataFlowStatus = new DataFlowStatus();
-            this.nodeProgress = new Progress<NodeStateChange<string>>();
+            this.nodeProgress = new Progress<NodeStateChange>();
 
             this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
             this.pluginContainer = pluginContainer;
@@ -37,7 +37,8 @@ namespace IndependExecution.Implementention.Core
         public void AddLink(AddLinkRequest addLinkRequest)
         {
             var linkId = GenerateLinkId();
-            dataFlowFacade.AddLink(linkId, addLinkRequest.SourceId, addLinkRequest.TargetId /*, TODO fix maplinks*/);
+            var link = new Link(linkId, dataFlowFacade.GetNode(addLinkRequest.SourceId), dataFlowFacade.GetNode(addLinkRequest.TargetId));/*, TODO fix maplinks*/
+            dataFlowFacade.AddLink(link);
             AddLinkStatuses(addLinkRequest, linkId);
             progress.Report(dataFlowStatus);
         }
@@ -64,7 +65,7 @@ namespace IndependExecution.Implementention.Core
 
         public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            pluginContainer.GetPlugin(changeConfigRequest.nodeId).ChangeConfig(changeConfigRequest.config);
+            dataFlowFacade.GetNode(changeConfigRequest.nodeId).ChangeConfig(changeConfigRequest.config);
         }
 
         public IDataFlowPluginConfig GetConfig(string nodeId)
@@ -125,7 +126,7 @@ namespace IndependExecution.Implementention.Core
             throw new NotImplementedException();
         }
 
-        private void NodeProgress_ProgressChanged(object sender, NodeStateChange<string> e)
+        private void NodeProgress_ProgressChanged(object sender, NodeStateChange e)
         {
             dataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
             progress.Report(dataFlowStatus);
