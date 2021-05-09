@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace ETLEngine.Dto.Link
+﻿namespace ETLEngine.Dto.Link
 {
     public class SpecificPort : Port
     {
-        public List<Map> Ports { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string TypeId { get; set; }
     }
 }
