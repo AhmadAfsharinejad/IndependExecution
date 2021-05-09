@@ -17,12 +17,10 @@ namespace IndependExecution.Implementention.Core
         private readonly IPluginFactory pluginFactory;
         private readonly Progress<NodeStateChange> nodeProgress;
         private readonly DataFlowStatus dataFlowStatus;
-        private readonly IPluginContainer pluginContainer;
 
         public DataFlow(IProgress<DataFlowStatus> progress,
             IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade,
-            IPluginFactory pluginExecutableFactory,
-            IPluginContainer pluginContainer)
+            IPluginFactory pluginExecutableFactory)
         {
             this.progress = progress;
             this.dataFlowFacade = dataFlowFacade;
@@ -31,7 +29,6 @@ namespace IndependExecution.Implementention.Core
             this.nodeProgress = new Progress<NodeStateChange>();
 
             this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
-            this.pluginContainer = pluginContainer;
         }
 
         public void AddLink(AddLinkRequest addLinkRequest)
@@ -48,7 +45,6 @@ namespace IndependExecution.Implementention.Core
             var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
             plugin.Location = addNodeRequest.Location;
             dataFlowFacade.AddNode(plugin);
-            pluginContainer.AddPlugin(plugin);
             AddNodeToStatus(plugin, plugin.Id);
             progress.Report(dataFlowStatus);
         }
@@ -70,7 +66,7 @@ namespace IndependExecution.Implementention.Core
 
         public IDataFlowPluginConfig GetConfig(string nodeId)
         {
-            var config = pluginContainer.GetPlugin(nodeId).GetConfig();
+            var config = dataFlowFacade.GetNode(nodeId).GetConfig();
             return new DataFlowPluginConfig()
             {
                 Config = config,
