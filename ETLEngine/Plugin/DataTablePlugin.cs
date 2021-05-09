@@ -23,7 +23,6 @@ namespace IndependExecution.Sample.Plugin
         private MultipleSpecificPort _outputs;
         public IOutputPort Outputs { get { return _outputs; } }
 
-        //TODO plugin link vorodi khorojisho bege
         private readonly DataTableConfig config;
 
         public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange> progress = null)

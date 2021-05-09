@@ -2,6 +2,7 @@
 
 namespace IndependExecution.Implementention.Progress
 {
+    //TODO staus is good name?
     public class DataFlowStatus
     {
         public List<NodeStatus> Nodes { get; }
