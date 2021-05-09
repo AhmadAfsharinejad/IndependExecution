@@ -45,7 +45,7 @@ namespace IndependExecution.Implementention.Core
             var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
             plugin.Location = addNodeRequest.Location;
             dataFlowFacade.AddNode(plugin);
-            AddNodeToStatus(plugin, plugin.Id);
+            AddNodeToStatus(plugin);
             progress.Report(dataFlowStatus);
         }
 
@@ -61,7 +61,11 @@ namespace IndependExecution.Implementention.Core
 
         public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            dataFlowFacade.GetNode(changeConfigRequest.nodeId).ChangeConfig(changeConfigRequest.config);
+            var plugin = dataFlowFacade.GetNode(changeConfigRequest.nodeId);
+            plugin.ChangeConfig(changeConfigRequest.config);
+
+            EditNodeToStatus(plugin);
+            progress.Report(dataFlowStatus);
         }
 
         public IDataFlowPluginConfig GetConfig(string nodeId)
@@ -76,11 +80,6 @@ namespace IndependExecution.Implementention.Core
         public DataFlowStatus GetDataFlow()
         {
             return dataFlowStatus;
-        }
-
-        public List<IMapLink> GetMaps(string nodeId)
-        {
-            throw new NotImplementedException();
         }
 
         public void Invalid(IEnumerable<INode> nodes)
@@ -128,13 +127,23 @@ namespace IndependExecution.Implementention.Core
             progress.Report(dataFlowStatus);
         }
 
-        private void AddNodeToStatus(IPlugin plugin, string id)
+        private void AddNodeToStatus(IPlugin plugin)
         {
-            dataFlowStatus.Nodes.Add(new NodeStatus(id, plugin.TypeId)
+            dataFlowStatus.Nodes.Add(new NodeStatus(plugin.Id, plugin.TypeId)
             {
                 State = "Idle",
                 Location = plugin.Location,
+                InputPorts = plugin.Inputs,
+                OutputPorts = plugin.Outputs,
             });
+        }
+
+        private void EditNodeToStatus(IPlugin plugin)
+        {
+            var node = dataFlowStatus.Nodes.First(x => x.Id == plugin.Id);
+
+            node.InputPorts = plugin.Inputs;
+            node.OutputPorts = plugin.Outputs;
         }
 
         private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)

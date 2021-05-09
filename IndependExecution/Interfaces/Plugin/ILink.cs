@@ -24,6 +24,7 @@ namespace IndependExecution.Interfaces.Plugin
             this.Id = id;
             this.Source = source;
             this.Target = target;
+            this.Filter = new List<string>();
         }
     }
 }

@@ -7,8 +7,8 @@ namespace IndependExecution.Implementention.Progress
         public LinkStatus(string id,
             string sourceId,
             string targetId,
-            IMapLink sourceMapLink,
-            IMapLink targetMapLink)
+            string sourceMapLink,
+            string targetMapLink)
         {
             Id = id;
             SourceId = sourceId;
@@ -20,8 +20,8 @@ namespace IndependExecution.Implementention.Progress
         public string Id { get; }
         public string SourceId { get; }
         public string TargetId { get; }
-        public IMapLink SourceMapLink { get; }
-        public IMapLink TargetMapLink { get; }
+        public string SourceMapLink { get; }
+        public string TargetMapLink { get; }
 
         public override string ToString()
         {

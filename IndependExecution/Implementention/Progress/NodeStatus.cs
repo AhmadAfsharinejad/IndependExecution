@@ -1,4 +1,6 @@
-﻿namespace IndependExecution.Implementention.Progress
+﻿using IndependExecution.Dto.Link;
+
+namespace IndependExecution.Implementention.Progress
 {
     public class NodeStatus
     {
@@ -13,6 +15,8 @@
         public string Name { get; set; }
         public string Location { get; set; }
         public string State { get; set; }
+        public IInputPort InputPorts { get; set; }
+        public IOutputPort OutputPorts { get; set; }
 
         public override string ToString()
         {

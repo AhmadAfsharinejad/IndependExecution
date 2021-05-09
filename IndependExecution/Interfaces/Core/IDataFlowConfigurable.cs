@@ -1,5 +1,4 @@
 ﻿using IndependExecution.Dto;
-using System.Collections.Generic;
 
 namespace IndependExecution.Interfaces.Core
 {
@@ -7,6 +6,5 @@ namespace IndependExecution.Interfaces.Core
     {
         void ChangeConfig(ChangeConfigRequest changeConfigRequest);
         IDataFlowPluginConfig GetConfig(string nodeId);
-        List<IMapLink> GetMaps(string nodeId);
     }
 }

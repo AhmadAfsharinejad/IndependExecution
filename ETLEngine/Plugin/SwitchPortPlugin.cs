@@ -1,4 +1,5 @@
-﻿using IndependExecution.Interfaces.Core;
+﻿using IndependExecution.Dto.Link;
+using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
@@ -18,8 +19,9 @@ namespace ETLEngine.Plugin
 
         public IPluginConfigurable plugin { get; set; }
 
-        public Port Inputs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Port Outputs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IInputPort Inputs { get; private set; }
+        public IOutputPort Outputs { get; private set; }
+
         private readonly SwitchPortConfig config;
 
 
@@ -27,6 +29,9 @@ namespace ETLEngine.Plugin
             : base(id, socket, progress)
         {
             config = new SwitchPortConfig();
+
+            this.Inputs = new FinitePort() { MaxPort = 1 };
+            this.Outputs = new OutPort();
         }
 
         public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable> input,
