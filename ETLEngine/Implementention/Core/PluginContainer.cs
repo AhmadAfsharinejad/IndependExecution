@@ -15,7 +15,7 @@ namespace ETLEngine.Implementention.Core
 
         public void AddPlugin(IPlugin plugin)
         {
-            plugins[plugin.plugin.Id] = plugin;
+            plugins[plugin.Id] = plugin;
         }
 
         public IPlugin GetPlugin(string id)

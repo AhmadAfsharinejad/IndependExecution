@@ -3,7 +3,6 @@ using IndependExecution.Implementention.Progress;
 using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
-using Mohaymen.DataFlowExecutor.Core.Graph.Abstraction;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using System;
 using System.Collections.Generic;
@@ -47,9 +46,9 @@ namespace IndependExecution.Implementention.Core
         {
             var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
             plugin.Location = addNodeRequest.Location;
-            dataFlowFacade.AddNode(plugin.plugin);
+            dataFlowFacade.AddNode(plugin);
             pluginContainer.AddPlugin(plugin);
-            AddNodeToStatus(plugin, plugin.plugin.Id);
+            AddNodeToStatus(plugin, plugin.Id);
             progress.Report(dataFlowStatus);
         }
 
@@ -65,12 +64,12 @@ namespace IndependExecution.Implementention.Core
 
         public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            pluginContainer.GetPlugin(changeConfigRequest.nodeId).plugin.ChangeConfig(changeConfigRequest.config);
+            pluginContainer.GetPlugin(changeConfigRequest.nodeId).ChangeConfig(changeConfigRequest.config);
         }
 
         public IDataFlowPluginConfig GetConfig(string nodeId)
         {
-            var config = pluginContainer.GetPlugin(nodeId).plugin.GetConfig();
+            var config = pluginContainer.GetPlugin(nodeId).GetConfig();
             return new DataFlowPluginConfig()
             {
                 Config = config,

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IndependExecution.Sample.Plugin
 {
-    public class DataTablePlugin : IPlugin
+    public class DataTablePlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
         public string TypeId => "DataTable";
         public string Location { get; set; }
@@ -19,18 +19,9 @@ namespace IndependExecution.Sample.Plugin
         public IPluginConfigurable plugin { get; set; }
 
         //TODO plugin link vorodi khorojisho bege
-        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
-        {
-            this.plugin = new DataTablePluginExecuter(id, socket, progress);
-        }
-    }
-
-    public class DataTablePluginExecuter : ConstantSchemaPlugin<IBaseTable>, IPluginConfigurable
-    {
-
         private readonly DataTableConfig config;
 
-        public DataTablePluginExecuter(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
+        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
             : base(id, socket, progress)
         {
             config = new DataTableConfig();

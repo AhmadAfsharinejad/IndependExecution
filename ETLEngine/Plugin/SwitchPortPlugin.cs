@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ETLEngine.Plugin
 {
-    public class SwitchPortPlugin :  IPlugin
+    public class SwitchPortPlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
         public string TypeId => "SwitchPort";
         public string Location { get; set; }
@@ -20,18 +20,10 @@ namespace ETLEngine.Plugin
 
         public Port Inputs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Port Outputs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
-        {
-            this.plugin = new SwitchPortPluginExecuter(id, socket, progress);
-        }
-    }
-
-    public class SwitchPortPluginExecuter : ConstantSchemaPlugin<IBaseTable>, IPluginConfigurable
-    {
         private readonly SwitchPortConfig config;
 
-        public SwitchPortPluginExecuter(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
+
+        public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange<string>> progress = null)
             : base(id, socket, progress)
         {
             config = new SwitchPortConfig();
