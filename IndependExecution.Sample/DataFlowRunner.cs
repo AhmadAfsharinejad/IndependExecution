@@ -88,7 +88,7 @@ namespace IndependExecution.Sample
             dataFlowMediator.Run(scenario, new RunRequest() { NodeIds = new List<string>() { _nodeStatusList.Last().Id } });
         }
 
-        private void DataFlowProgress_ProgressChanged(object sender, Implementention.Progress.DataFlowStatus e)
+        private void DataFlowProgress_ProgressChanged(object sender, DataFlowStatus e)
         {
       
             Console.WriteLine("-----------------------");
