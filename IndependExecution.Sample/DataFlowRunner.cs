@@ -31,12 +31,17 @@ namespace IndependExecution.Sample
             var scenario = new Scenario("s1");
             dataFlowMediator.AddScenario(scenario);
 
+            Console.WriteLine("--add DataTable node");
+
             dataFlowMediator.AddNode(scenario, new AddNodeRequest() { Location = "0", TypeId = "DataTable" });
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
+            Console.WriteLine("--get DataTable config");
+
             var dataTableConfig = dataFlowMediator.GetConfig(scenario, GetNode("DataTable").Id);
 
+            Console.WriteLine("--change DataTable config");
             var dic = new Dictionary<string, List<string>> { };
             dic.Add("t1", new List<string>() { "c1", "c2" });
             dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest()
@@ -48,11 +53,13 @@ namespace IndependExecution.Sample
                 nodeId = GetNode("DataTable").Id,
             });
 
-            
+
+            Console.WriteLine("--add SwitchPort node");
             dataFlowMediator.AddNode(scenario, new AddNodeRequest() { Location = "1", TypeId = "SwitchPort" });
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
+            Console.WriteLine("--add DataTable-SwitchPort link");
             dataFlowMediator.AddLink(scenario, new AddLinkRequest()
             {
                 SourceId = GetNode("DataTable").Id,
@@ -63,7 +70,10 @@ namespace IndependExecution.Sample
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
+            Console.WriteLine("--get SwitchPort config");
             var switchPortConfig = dataFlowMediator.GetConfig(scenario, GetNode("SwitchPort").Id);
+
+            Console.WriteLine("--change SwitchPort config");
             dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest()
             {
                 config = new SwitchPortConfig()
@@ -74,15 +84,14 @@ namespace IndependExecution.Sample
             });
         
 
+            Console.WriteLine("--run SwitchPort node");
             dataFlowMediator.Run(scenario, new RunRequest() { NodeIds = new List<string>() { _nodeStatusList.Last().Id } });
         }
 
         private void DataFlowProgress_ProgressChanged(object sender, Implementention.Progress.DataFlowStatus e)
         {
-            //Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            //return;
-
-            Console.WriteLine("\\\\\\\\\\\\\\\\");
+      
+            Console.WriteLine("-----------------------");
             _nodeStatusList = e.Nodes.ToList();
             _linkStatusList = e.Links.ToList();
 
@@ -91,7 +100,6 @@ namespace IndependExecution.Sample
             Console.WriteLine("--");
             Console.WriteLine("links:");
             Console.WriteLine(string.Join("\n", e.Links.Select(x => x.ToString())));
-            Console.WriteLine("--");
         }
 
         private NodeStatus GetNode(string type)
