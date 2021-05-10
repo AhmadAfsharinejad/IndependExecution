@@ -97,7 +97,6 @@ namespace IndependExecution.Sample
 
             Console.WriteLine("nodes:");
             Console.WriteLine(string.Join("\n", e.Nodes.Select(x => x.ToString())));
-            Console.WriteLine("--");
             Console.WriteLine("links:");
             Console.WriteLine(string.Join("\n", e.Links.Select(x => x.ToString())));
         }
