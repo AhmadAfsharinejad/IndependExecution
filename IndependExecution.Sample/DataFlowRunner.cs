@@ -27,6 +27,7 @@ namespace IndependExecution.Sample
 
             dataFlowProgress.ProgressChanged += DataFlowProgress_ProgressChanged;
 
+
             var scenario = new Scenario("s1");
             dataFlowMediator.AddScenario(scenario);
 
@@ -78,6 +79,9 @@ namespace IndependExecution.Sample
 
         private void DataFlowProgress_ProgressChanged(object sender, Implementention.Progress.DataFlowStatus e)
         {
+            //Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+            //return;
+
             Console.WriteLine("\\\\\\\\\\\\\\\\");
             _nodeStatusList = e.Nodes.ToList();
             _linkStatusList = e.Links.ToList();

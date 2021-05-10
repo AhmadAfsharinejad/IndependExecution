@@ -15,7 +15,7 @@ namespace IndependExecution.Implementention.Core
         private readonly IProgress<DataFlowStatus> progress;
         private readonly IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade;
         private readonly IPluginFactory pluginFactory;
-        private readonly Progress<NodeStateChange> nodeProgress;
+        private readonly NodeStateChangeProgress nodeProgress;
         private readonly DataFlowStatus dataFlowStatus;
 
         public DataFlow(IProgress<DataFlowStatus> progress,
@@ -26,7 +26,7 @@ namespace IndependExecution.Implementention.Core
             this.dataFlowFacade = dataFlowFacade;
             this.pluginFactory = pluginExecutableFactory;
             this.dataFlowStatus = new DataFlowStatus();
-            this.nodeProgress = new Progress<NodeStateChange>();
+            this.nodeProgress = new NodeStateChangeProgress();
 
             this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
         }
