@@ -10,13 +10,11 @@ namespace IndependExecution.Implementention.Core
 
         public void AddScenario(IScenario scenario)
         {
-            //TODO progress
             scenarioContainer.CreateDataFlow(scenario);
         }
 
         public DataFlowStatus GetScenario(IScenario scenario)
         {
-            //TODO progress - az samte client bayad biad?
            return scenarioContainer.GetDataFlow(scenario).GetDataFlow();
         }
 
