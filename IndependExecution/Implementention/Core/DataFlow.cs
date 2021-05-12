@@ -64,6 +64,7 @@ namespace IndependExecution.Implementention.Core
             var plugin = dataFlowFacade.GetNode(changeConfigRequest.nodeId);
             plugin.ChangeConfig(changeConfigRequest.config);
 
+            //TODO check links
             EditNodeToStatus(plugin);
             progress.Report(dataFlowStatus);
         }
