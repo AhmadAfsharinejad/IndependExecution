@@ -99,6 +99,7 @@ namespace IndependExecution.Sample
             Console.WriteLine(string.Join("\n", e.Nodes.Select(x => x.ToString())));
             Console.WriteLine("links:");
             Console.WriteLine(string.Join("\n", e.Links.Select(x => x.ToString())));
+            Console.WriteLine(string.Empty);
         }
 
         private NodeStatus GetNode(string type)
