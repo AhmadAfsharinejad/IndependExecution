@@ -17,18 +17,18 @@ namespace IndependExecution.Sample.Plugin
         public string Location { get; set; }
         public string Note { get; set; }
 
-        public IPluginConfigurable plugin { get; set; }
+        public IPluginConfigurable Plugin { get; set; }
 
         public IInputPort Inputs { get; private set; }
         private MultipleSpecificPort _outputs;
         public IOutputPort Outputs { get { return _outputs; } }
 
-        private readonly DataTableConfig config;
+        private readonly DataTableConfig _config;
 
         public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange> progress = null)
             : base(id, socket, progress)
         {
-            config = new DataTableConfig();
+            _config = new DataTableConfig();
 
             this.Inputs = new NonePort();
             this._outputs = new MultipleSpecificPort();
@@ -44,7 +44,7 @@ namespace IndependExecution.Sample.Plugin
 
         public IPluginConfig GetConfig()
         {
-            return config;
+            return _config;
         }
 
         public void ChangeConfig(IPluginConfig config)

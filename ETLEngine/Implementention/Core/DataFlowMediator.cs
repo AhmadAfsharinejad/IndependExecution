@@ -6,46 +6,46 @@ namespace IndependExecution.Implementention.Core
 {
     public class DataFlowMediator
     {
-        private readonly IScenarioContainer scenarioContainer;
+        private readonly IScenarioContainer _scenarioContainer;
 
         public void AddScenario(IScenario scenario)
         {
-            scenarioContainer.CreateDataFlow(scenario);
+            _scenarioContainer.CreateDataFlow(scenario);
         }
 
         public DataFlowStatus GetScenario(IScenario scenario)
         {
-           return scenarioContainer.GetDataFlow(scenario).GetDataFlow();
+           return _scenarioContainer.GetDataFlow(scenario).GetDataFlow();
         }
 
         public DataFlowMediator(IScenarioContainer scenarioContainer)
         {
-            this.scenarioContainer = scenarioContainer;
+            this._scenarioContainer = scenarioContainer;
         }
 
         public void AddNode(IScenario scenario, AddNodeRequest addNodeRequest)
         {
-            scenarioContainer.GetDataFlow(scenario).AddNode(addNodeRequest);
+            _scenarioContainer.GetDataFlow(scenario).AddNode(addNodeRequest);
         }
 
         public void AddLink(IScenario scenario, AddLinkRequest addLinkRequest)
         {
-            scenarioContainer.GetDataFlow(scenario).AddLink(addLinkRequest);
+            _scenarioContainer.GetDataFlow(scenario).AddLink(addLinkRequest);
         }
 
         public void Run(IScenario scenario, RunRequest runRequest)
         {
-            scenarioContainer.GetDataFlow(scenario).Run(runRequest);
+            _scenarioContainer.GetDataFlow(scenario).Run(runRequest);
         }
 
         public IDataFlowPluginConfig GetConfig(IScenario scenario, string nodeId)
         {
-            return scenarioContainer.GetDataFlow(scenario).GetConfig(nodeId);
+            return _scenarioContainer.GetDataFlow(scenario).GetConfig(nodeId);
         }
 
         public void ChangeConfig(IScenario scenario, ChangeConfigRequest changeConfigRequest)
         {
-            scenarioContainer.GetDataFlow(scenario).ChangeConfig(changeConfigRequest);
+            _scenarioContainer.GetDataFlow(scenario).ChangeConfig(changeConfigRequest);
         }
     }
 }

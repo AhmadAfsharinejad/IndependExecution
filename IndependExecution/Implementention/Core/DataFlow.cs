@@ -12,41 +12,41 @@ namespace IndependExecution.Implementention.Core
 {
     public class DataFlow : IDataFlow
     {
-        private readonly IProgress<DataFlowStatus> progress;
-        private readonly IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade;
-        private readonly IPluginFactory pluginFactory;
-        private readonly NodeStateChangeProgress nodeProgress;
-        private readonly DataFlowStatus dataFlowStatus;
+        private readonly IProgress<DataFlowStatus> _progress;
+        private readonly IDataFlowFacade<IBaseTable, IPlugin, ILink> _dataFlowFacade;
+        private readonly IPluginFactory _pluginFactory;
+        private readonly NodeStateChangeProgress _nodeProgress;
+        private readonly DataFlowStatus _dataFlowStatus;
 
         public DataFlow(IProgress<DataFlowStatus> progress,
             IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade,
             IPluginFactory pluginExecutableFactory)
         {
-            this.progress = progress;
-            this.dataFlowFacade = dataFlowFacade;
-            this.pluginFactory = pluginExecutableFactory;
-            this.dataFlowStatus = new DataFlowStatus();
-            this.nodeProgress = new NodeStateChangeProgress();
+            this._progress = progress;
+            this._dataFlowFacade = dataFlowFacade;
+            this._pluginFactory = pluginExecutableFactory;
+            this._dataFlowStatus = new DataFlowStatus();
+            this._nodeProgress = new NodeStateChangeProgress();
 
-            this.nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
+            this._nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
         }
 
         public void AddLink(AddLinkRequest addLinkRequest)
         {
             var linkId = GenerateLinkId();
-            var link = new Link(linkId, dataFlowFacade.GetNode(addLinkRequest.SourceId), dataFlowFacade.GetNode(addLinkRequest.TargetId));/*, TODO fix maplinks*/
-            dataFlowFacade.AddLink(link);
+            var link = new Link(linkId, _dataFlowFacade.GetNode(addLinkRequest.SourceId), _dataFlowFacade.GetNode(addLinkRequest.TargetId));/*, TODO fix maplinks*/
+            _dataFlowFacade.AddLink(link);
             AddLinkStatuses(addLinkRequest, linkId);
-            progress.Report(dataFlowStatus);
+            _progress.Report(_dataFlowStatus);
         }
 
         public void AddNode(AddNodeRequest addNodeRequest)
         {
-            var plugin = pluginFactory.GetPlugin(addNodeRequest.TypeId, nodeProgress);
+            var plugin = _pluginFactory.GetPlugin(addNodeRequest.TypeId, _nodeProgress);
             plugin.Location = addNodeRequest.Location;
-            dataFlowFacade.AddNode(plugin);
+            _dataFlowFacade.AddNode(plugin);
             AddNodeToStatus(plugin);
-            progress.Report(dataFlowStatus);
+            _progress.Report(_dataFlowStatus);
         }
 
         public void Cancel(IEnumerable<INode> nodes)
@@ -61,17 +61,17 @@ namespace IndependExecution.Implementention.Core
 
         public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            var plugin = dataFlowFacade.GetNode(changeConfigRequest.nodeId);
-            plugin.ChangeConfig(changeConfigRequest.config);
+            var plugin = _dataFlowFacade.GetNode(changeConfigRequest.NodeId);
+            plugin.ChangeConfig(changeConfigRequest.Config);
 
             //TODO check links
             EditNodeToStatus(plugin);
-            progress.Report(dataFlowStatus);
+            _progress.Report(_dataFlowStatus);
         }
 
         public IDataFlowPluginConfig GetConfig(string nodeId)
         {
-            var config = dataFlowFacade.GetNode(nodeId).GetConfig();
+            var config = _dataFlowFacade.GetNode(nodeId).GetConfig();
             return new DataFlowPluginConfig()
             {
                 Config = config,
@@ -80,7 +80,7 @@ namespace IndependExecution.Implementention.Core
 
         public DataFlowStatus GetDataFlow()
         {
-            return dataFlowStatus;
+            return _dataFlowStatus;
         }
 
         public void Invalid(IEnumerable<INode> nodes)
@@ -108,7 +108,7 @@ namespace IndependExecution.Implementention.Core
             foreach (var nodeId in runRequest.NodeIds)
             {
                 //TODO run list id begire
-                dataFlowFacade.Run(nodeId);
+                _dataFlowFacade.Run(nodeId);
             }
         }
 
@@ -124,13 +124,13 @@ namespace IndependExecution.Implementention.Core
 
         private void NodeProgress_ProgressChanged(object sender, NodeStateChange e)
         {
-            dataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
-            progress.Report(dataFlowStatus);
+            _dataFlowStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
+            _progress.Report(_dataFlowStatus);
         }
 
         private void AddNodeToStatus(IPlugin plugin)
         {
-            dataFlowStatus.Nodes.Add(new NodeStatus(plugin.Id, plugin.TypeId)
+            _dataFlowStatus.Nodes.Add(new NodeStatus(plugin.Id, plugin.TypeId)
             {
                 State = "Idle",
                 Location = plugin.Location,
@@ -141,7 +141,7 @@ namespace IndependExecution.Implementention.Core
 
         private void EditNodeToStatus(IPlugin plugin)
         {
-            var node = dataFlowStatus.Nodes.First(x => x.Id == plugin.Id);
+            var node = _dataFlowStatus.Nodes.First(x => x.Id == plugin.Id);
 
             node.InputPorts = plugin.Inputs;
             node.OutputPorts = plugin.Outputs;
@@ -149,7 +149,7 @@ namespace IndependExecution.Implementention.Core
 
         private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)
         {
-            dataFlowStatus.Links.Add(new LinkStatus(linkId,
+            _dataFlowStatus.Links.Add(new LinkStatus(linkId,
                 addLinkRequest.SourceId,
                 addLinkRequest.TargetId,
                 addLinkRequest.SourceMapLink,

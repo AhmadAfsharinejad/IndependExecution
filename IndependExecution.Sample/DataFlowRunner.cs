@@ -46,11 +46,11 @@ namespace IndependExecution.Sample
             dic.Add("t1", new List<string>() { "c1", "c2" });
             dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest()
             {
-                config = new DataTableConfig()
+                Config = new DataTableConfig()
                 {
                     Tables = dic
                 },
-                nodeId = GetNode("DataTable").Id,
+                NodeId = GetNode("DataTable").Id,
             });
 
 
@@ -76,11 +76,11 @@ namespace IndependExecution.Sample
             Console.WriteLine("--change SwitchPort config");
             dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest()
             {
-                config = new SwitchPortConfig()
+                Config = new SwitchPortConfig()
                 {
                     Columns = new List<string> { "c1", "c2" }
                 },
-                nodeId = GetNode("SwitchPort").Id,
+                NodeId = GetNode("SwitchPort").Id,
             });
         
 

@@ -4,6 +4,6 @@ namespace IndependExecution.Model.Plugin
 {
     public class SakhtarVorodiDto
     {
-        public List<string> outputs;
+        public List<string> Outputs;
     }
 }

@@ -4,7 +4,7 @@ namespace IndependExecution.Dto
 {
     public class ChangeConfigRequest
     {
-        public string nodeId { get; set; }
-        public IPluginConfig config { get; set; }
+        public string NodeId { get; set; }
+        public IPluginConfig Config { get; set; }
     }
 }

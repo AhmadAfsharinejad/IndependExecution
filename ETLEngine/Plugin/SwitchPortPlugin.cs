@@ -17,18 +17,18 @@ namespace ETLEngine.Plugin
         public string Location { get; set; }
         public string Note { get; set; }
 
-        public IPluginConfigurable plugin { get; set; }
+        public IPluginConfigurable Plugin { get; set; }
 
         public IInputPort Inputs { get; private set; }
         public IOutputPort Outputs { get; private set; }
 
-        private readonly SwitchPortConfig config;
+        private readonly SwitchPortConfig _config;
 
 
         public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange> progress = null)
             : base(id, socket, progress)
         {
-            config = new SwitchPortConfig();
+            _config = new SwitchPortConfig();
 
             this.Inputs = new FinitePort() { MaxPort = 1 };
             this.Outputs = new OutPort();
@@ -44,7 +44,7 @@ namespace ETLEngine.Plugin
 
         public IPluginConfig GetConfig()
         {
-            return config;
+            return _config;
         }
 
         public void ChangeConfig(IPluginConfig config)
