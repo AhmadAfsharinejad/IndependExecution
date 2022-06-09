@@ -1,15 +1,15 @@
-﻿using IndependExecution.Dto;
-using IndependExecution.Implementention.Core;
-using IndependExecution.Progress;
-using IndependExecution.Sample.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IndependExecution.Implementention.Progress;
-using IndependExecution.Sample.Plugin;
-using ETLEngine.Plugin;
 using System.Threading.Tasks;
+using ETLEngine.Plugin;
+using IndependExecution.Dto;
 using IndependExecution.Dto.Link;
+using IndependExecution.Implementention.Core;
+using IndependExecution.Implementention.Progress;
+using IndependExecution.Progress;
+using IndependExecution.Sample.Dto;
+using IndependExecution.Sample.Plugin;
 
 namespace IndependExecution.Sample
 {
@@ -33,7 +33,7 @@ namespace IndependExecution.Sample
 
             Console.WriteLine("--add DataTable node");
 
-            dataFlowMediator.AddNode(scenario, new AddNodeRequest() { Location = "0", TypeId = "DataTable" });
+            dataFlowMediator.AddNode(scenario, new AddNodeRequest { Location = "0", TypeId = "DataTable" });
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
@@ -42,11 +42,11 @@ namespace IndependExecution.Sample
             var dataTableConfig = dataFlowMediator.GetConfig(scenario, GetNode("DataTable").Id);
 
             Console.WriteLine("--change DataTable config");
-            var dic = new Dictionary<string, List<string>> { };
-            dic.Add("t1", new List<string>() { "c1", "c2" });
-            dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest()
+            var dic = new Dictionary<string, List<string>>();
+            dic.Add("t1", new List<string> { "c1", "c2" });
+            dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest
             {
-                Config = new DataTableConfig()
+                Config = new DataTableConfig
                 {
                     Tables = dic
                 },
@@ -55,12 +55,12 @@ namespace IndependExecution.Sample
 
 
             Console.WriteLine("--add SwitchPort node");
-            dataFlowMediator.AddNode(scenario, new AddNodeRequest() { Location = "1", TypeId = "SwitchPort" });
+            dataFlowMediator.AddNode(scenario, new AddNodeRequest { Location = "1", TypeId = "SwitchPort" });
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
             Console.WriteLine("--add DataTable-SwitchPort link");
-            dataFlowMediator.AddLink(scenario, new AddLinkRequest()
+            dataFlowMediator.AddLink(scenario, new AddLinkRequest
             {
                 SourceId = GetNode("DataTable").Id,
                 TargetId = GetNode("SwitchPort").Id,
@@ -74,9 +74,9 @@ namespace IndependExecution.Sample
             var switchPortConfig = dataFlowMediator.GetConfig(scenario, GetNode("SwitchPort").Id);
 
             Console.WriteLine("--change SwitchPort config");
-            dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest()
+            dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest
             {
-                Config = new SwitchPortConfig()
+                Config = new SwitchPortConfig
                 {
                     Columns = new List<string> { "c1", "c2" }
                 },
@@ -85,12 +85,11 @@ namespace IndependExecution.Sample
         
 
             Console.WriteLine("--run SwitchPort node");
-            dataFlowMediator.Run(scenario, new RunRequest() { NodeIds = new List<string>() { _nodeStatusList.Last().Id } });
+            dataFlowMediator.Run(scenario, new RunRequest { NodeIds = new List<string> { _nodeStatusList.Last().Id } });
         }
 
-        private void DataFlowProgress_ProgressChanged(object sender, DataFlowStatus e)
+        private void DataFlowProgress_ProgressChanged(object? sender, DataFlowStatus e)
         {
-      
             Console.WriteLine("-----------------------");
             _nodeStatusList = e.Nodes.ToList();
             _linkStatusList = e.Links.ToList();

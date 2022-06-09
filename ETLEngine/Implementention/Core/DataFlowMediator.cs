@@ -20,7 +20,7 @@ namespace IndependExecution.Implementention.Core
 
         public DataFlowMediator(IScenarioContainer scenarioContainer)
         {
-            this._scenarioContainer = scenarioContainer;
+            _scenarioContainer = scenarioContainer;
         }
 
         public void AddNode(IScenario scenario, AddNodeRequest addNodeRequest)

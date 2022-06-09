@@ -11,7 +11,7 @@ namespace IndependExecution.Implementention.Progress
         
         public DataFlowStatus()
         {
-            this.Nodes = new List<NodeStatus>();
+            Nodes = new List<NodeStatus>();
             Links = new List<LinkStatus>();
         }
     }

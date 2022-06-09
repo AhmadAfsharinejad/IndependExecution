@@ -1,5 +1,5 @@
-﻿using IndependExecution.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using IndependExecution.Dto;
 
 namespace IndependExecution.Interfaces.Core
 {

@@ -1,13 +1,13 @@
-﻿using IndependExecution.Dto.Link;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using IndependExecution.Dto.Link;
 using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using Mohaymen.DataFlowManagement.Plugin;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace IndependExecution.Sample.Plugin
 {
@@ -30,8 +30,8 @@ namespace IndependExecution.Sample.Plugin
         {
             _config = new DataTableConfig();
 
-            this.Inputs = new NonePort();
-            this._outputs = new MultipleSpecificPort();
+            Inputs = new NonePort();
+            _outputs = new MultipleSpecificPort();
         }
 
         public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable> input,
@@ -51,11 +51,11 @@ namespace IndependExecution.Sample.Plugin
         {
             var dt = config as DataTableConfig;
 
-            this._outputs.Ports.Clear();
+            _outputs.Ports.Clear();
             int index = 0;
             foreach (var item in dt.Tables)
             {
-                this._outputs.Ports.Add(new SpecificPort()
+                _outputs.Ports.Add(new SpecificPort
                 {
                     Name = (index++).ToString(),
                     TypeId = item.Key,

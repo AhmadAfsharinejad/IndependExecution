@@ -1,5 +1,5 @@
-﻿using IndependExecution.Interfaces.Plugin;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using IndependExecution.Interfaces.Plugin;
 
 namespace IndependExecution.Interfaces.Core
 {

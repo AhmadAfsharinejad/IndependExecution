@@ -1,13 +1,13 @@
-﻿using IndependExecution.Dto.Link;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using IndependExecution.Dto.Link;
 using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using Mohaymen.DataFlowManagement.Plugin;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ETLEngine.Plugin
 {
@@ -30,8 +30,8 @@ namespace ETLEngine.Plugin
         {
             _config = new SwitchPortConfig();
 
-            this.Inputs = new FinitePort() { MaxPort = 1 };
-            this.Outputs = new OutPort();
+            Inputs = new FinitePort { MaxPort = 1 };
+            Outputs = new OutPort();
         }
 
         public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable> input,

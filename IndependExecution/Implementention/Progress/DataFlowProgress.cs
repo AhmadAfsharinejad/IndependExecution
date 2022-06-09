@@ -1,5 +1,5 @@
-﻿using IndependExecution.Implementention.Progress;
-using System;
+﻿using System;
+using IndependExecution.Implementention.Progress;
 
 namespace IndependExecution.Progress
 {

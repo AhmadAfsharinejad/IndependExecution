@@ -1,6 +1,6 @@
-﻿using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
+﻿using System.Collections.Generic;
+using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowManagement.Model;
-using System.Collections.Generic;
 
 namespace ETLEngine.Plugin
 {
@@ -19,7 +19,7 @@ namespace ETLEngine.Plugin
             }
         }
 
-        public SocketForTest(IMapping mapping) : base()
+        public SocketForTest(IMapping mapping)
         {
             Mapping = mapping;
         }

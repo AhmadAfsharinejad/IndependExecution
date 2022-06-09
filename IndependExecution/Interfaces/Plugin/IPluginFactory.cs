@@ -1,6 +1,6 @@
-﻿using IndependExecution.Interfaces.Plugin;
+﻿using System;
+using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
-using System;
 
 namespace IndependExecution.Interfaces.Core
 {

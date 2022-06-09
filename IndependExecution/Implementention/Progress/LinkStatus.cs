@@ -1,6 +1,4 @@
-﻿using IndependExecution.Interfaces.Core;
-
-namespace IndependExecution.Implementention.Progress
+﻿namespace IndependExecution.Implementention.Progress
 {
     public class LinkStatus
     {

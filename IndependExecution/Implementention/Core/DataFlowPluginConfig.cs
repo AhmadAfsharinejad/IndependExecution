@@ -1,6 +1,6 @@
-﻿using IndependExecution.Interfaces.Core;
+﻿using System.Collections.Generic;
+using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
-using System.Collections.Generic;
 
 namespace IndependExecution.Implementention.Core
 {

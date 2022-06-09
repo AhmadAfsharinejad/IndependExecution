@@ -1,10 +1,10 @@
-﻿using IndependExecution.Interfaces.Core;
+﻿using System;
+using System.Collections.Generic;
+using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using IndependExecution.Progress;
 using IndependExecution.Sample.Factory;
 using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
-using System;
-using System.Collections.Generic;
 
 namespace IndependExecution.Implementention.Core
 {
@@ -15,8 +15,8 @@ namespace IndependExecution.Implementention.Core
 
         public ScenarioContainer(DataFlowProgress dataFlowProgress)
         {
-            this._dataFlows = new Dictionary<string, DataFlow>();
-            this._dataFlowProgress = dataFlowProgress;
+            _dataFlows = new Dictionary<string, DataFlow>();
+            _dataFlowProgress = dataFlowProgress;
         }
 
         public void CreateDataFlow(IScenario scenario)

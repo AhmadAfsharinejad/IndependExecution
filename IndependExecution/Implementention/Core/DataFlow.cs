@@ -1,12 +1,12 @@
-﻿using IndependExecution.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using IndependExecution.Dto;
 using IndependExecution.Implementention.Progress;
 using IndependExecution.Interfaces.Core;
 using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace IndependExecution.Implementention.Core
 {
@@ -22,13 +22,13 @@ namespace IndependExecution.Implementention.Core
             IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade,
             IPluginFactory pluginExecutableFactory)
         {
-            this._progress = progress;
-            this._dataFlowFacade = dataFlowFacade;
-            this._pluginFactory = pluginExecutableFactory;
-            this._dataFlowStatus = new DataFlowStatus();
-            this._nodeProgress = new NodeStateChangeProgress();
+            _progress = progress;
+            _dataFlowFacade = dataFlowFacade;
+            _pluginFactory = pluginExecutableFactory;
+            _dataFlowStatus = new DataFlowStatus();
+            _nodeProgress = new NodeStateChangeProgress();
 
-            this._nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
+            _nodeProgress.ProgressChanged += NodeProgress_ProgressChanged;
         }
 
         public void AddLink(AddLinkRequest addLinkRequest)
@@ -72,7 +72,7 @@ namespace IndependExecution.Implementention.Core
         public IDataFlowPluginConfig GetConfig(string nodeId)
         {
             var config = _dataFlowFacade.GetNode(nodeId).GetConfig();
-            return new DataFlowPluginConfig()
+            return new DataFlowPluginConfig
             {
                 Config = config,
             };
