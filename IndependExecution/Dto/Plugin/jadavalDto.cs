@@ -1,4 +1,4 @@
-﻿namespace IndependExecution.Model.Plugin
+﻿namespace IndependExecution.Dto.Plugin
 {
     public class JadavalDto
     {

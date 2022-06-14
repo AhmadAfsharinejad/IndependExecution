@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mohaymen.DataFlowExecutor" Version="1.0.10000-test.4" />
+    <PackageReference Include="Mohaymen.DataFlowExecutor" Version="1.0.10000-test.*" />
   </ItemGroup>
 
 </Project>

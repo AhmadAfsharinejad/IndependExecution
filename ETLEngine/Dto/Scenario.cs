@@ -1,6 +1,6 @@
 ﻿using IndependExecution.Interfaces.Core;
 
-namespace IndependExecution.Sample.Dto
+namespace ETLEngine.Dto
 {
     public class Scenario : IScenario
     {

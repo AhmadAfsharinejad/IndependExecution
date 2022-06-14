@@ -1,8 +1,7 @@
 ﻿using System;
-using IndependExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 
-namespace IndependExecution.Interfaces.Core
+namespace IndependExecution.Interfaces.Plugin
 {
     public interface IPluginFactory
     {

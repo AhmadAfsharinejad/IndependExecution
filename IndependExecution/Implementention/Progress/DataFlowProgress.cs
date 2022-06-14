@@ -1,7 +1,6 @@
 ﻿using System;
-using IndependExecution.Implementention.Progress;
 
-namespace IndependExecution.Progress
+namespace IndependExecution.Implementention.Progress
 {
     //public class DataFlowProgress : Progress<DataFlowStatus>, IProgress<DataFlowStatus>
     public class DataFlowProgress : IProgress<DataFlowStatus>

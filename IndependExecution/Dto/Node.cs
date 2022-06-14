@@ -1,6 +1,6 @@
 ﻿using IndependExecution.Interfaces.Core;
 
-namespace IndependExecution.Model
+namespace IndependExecution.Dto
 {
     public class Node : INode
     {

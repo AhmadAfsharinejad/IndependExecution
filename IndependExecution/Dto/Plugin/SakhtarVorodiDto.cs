@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IndependExecution.Model.Plugin
+namespace IndependExecution.Dto.Plugin
 {
     public class SakhtarVorodiDto
     {

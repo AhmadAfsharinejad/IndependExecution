@@ -9,7 +9,7 @@ using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using Mohaymen.DataFlowManagement.Plugin;
 
-namespace ETLEngine.Plugin
+namespace ETLEngine.Plugin.SwitchPort
 {
     public class SwitchPortPlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
@@ -50,16 +50,6 @@ namespace ETLEngine.Plugin
         public void ChangeConfig(IPluginConfig config)
         {
             config = config as SwitchPortConfig;
-        }
-    }
-
-    public class SwitchPortConfig : IPluginConfig
-    {
-        public List<string> Columns;
-
-        public SwitchPortConfig()
-        {
-            Columns = new List<string>();
         }
     }
 }

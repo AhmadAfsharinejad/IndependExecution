@@ -9,7 +9,7 @@ using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using Mohaymen.DataFlowManagement.Plugin;
 
-namespace IndependExecution.Sample.Plugin
+namespace ETLEngine.Plugin.DataTable
 {
     public class DataTablePlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
@@ -23,33 +23,33 @@ namespace IndependExecution.Sample.Plugin
         private MultipleSpecificPort _outputs;
         public IOutputPort Outputs { get { return _outputs; } }
 
-        private readonly DataTableConfig _config;
+        private readonly DataTablePluginConfig _pluginConfig;
 
-        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange> progress = null)
+        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange>? progress = null)
             : base(id, socket, progress)
         {
-            _config = new DataTableConfig();
+            _pluginConfig = new DataTablePluginConfig();
 
             Inputs = new NonePort();
             _outputs = new MultipleSpecificPort();
         }
 
-        public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable> input,
+        public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable>? input,
             CancellationToken cancellationToken)
         {
             Console.WriteLine($"Execute DataTablePlugin, id:{Id}");
 
-            return Task.FromResult<Dictionary<string, IBaseTable>>(null);
+            return Task.FromResult<Dictionary<string, IBaseTable>>(new Dictionary<string, IBaseTable>());
         }
 
         public IPluginConfig GetConfig()
         {
-            return _config;
+            return _pluginConfig;
         }
 
         public void ChangeConfig(IPluginConfig config)
         {
-            var dt = config as DataTableConfig;
+            var dt = config as DataTablePluginConfig;
 
             _outputs.Ports.Clear();
             int index = 0;
@@ -61,16 +61,6 @@ namespace IndependExecution.Sample.Plugin
                     TypeId = item.Key,
                 });
             }
-        }
-    }
-
-    public class DataTableConfig : IPluginConfig
-    {
-        public Dictionary<string, List<string>> Tables;
-
-        public DataTableConfig()
-        {
-            Tables = new Dictionary<string, List<string>>();
         }
     }
 }

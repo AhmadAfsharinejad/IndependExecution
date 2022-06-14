@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ETLEngine.Dto;
+using ETLEngine.Implementention.Core;
 using ETLEngine.Plugin;
+using ETLEngine.Plugin.DataTable;
+using ETLEngine.Plugin.SwitchPort;
 using IndependExecution.Dto;
 using IndependExecution.Dto.Link;
 using IndependExecution.Implementention.Core;
 using IndependExecution.Implementention.Progress;
-using IndependExecution.Progress;
-using IndependExecution.Sample.Dto;
-using IndependExecution.Sample.Plugin;
 
 namespace IndependExecution.Sample
 {
@@ -46,7 +47,7 @@ namespace IndependExecution.Sample
             dic.Add("t1", new List<string> { "c1", "c2" });
             dataFlowMediator.ChangeConfig(scenario, new ChangeConfigRequest
             {
-                Config = new DataTableConfig
+                Config = new DataTablePluginConfig
                 {
                     Tables = dic
                 },

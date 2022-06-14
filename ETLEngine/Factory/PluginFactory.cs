@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ETLEngine.Plugin;
-using IndependExecution.Interfaces.Core;
+using ETLEngine.Plugin.DataTable;
+using ETLEngine.Plugin.SwitchPort;
 using IndependExecution.Interfaces.Plugin;
-using IndependExecution.Sample.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 
-namespace IndependExecution.Sample.Factory
+namespace ETLEngine.Factory
 {
     public class PluginFactory : IPluginFactory
     {

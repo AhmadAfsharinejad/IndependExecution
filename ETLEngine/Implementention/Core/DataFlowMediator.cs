@@ -2,7 +2,7 @@
 using IndependExecution.Implementention.Progress;
 using IndependExecution.Interfaces.Core;
 
-namespace IndependExecution.Implementention.Core
+namespace ETLEngine.Implementention.Core
 {
     public class DataFlowMediator
     {
