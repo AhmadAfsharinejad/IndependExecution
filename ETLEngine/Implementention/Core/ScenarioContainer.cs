@@ -1,38 +1,39 @@
-﻿using IndependExecution.Interfaces.Core;
-using IndependExecution.Interfaces.Plugin;
-using IndependExecution.Progress;
-using IndependExecution.Sample.Factory;
-using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ETLEngine.Factory;
+using IndependentExecution.Implementation.Core;
+using IndependentExecution.Implementation.Progress;
+using IndependentExecution.Interfaces.Core;
+using IndependentExecution.Interfaces.Plugin;
+using Mohaymen.DataFlowExecutor.Core.Execution.Adaptor;
 
-namespace IndependExecution.Implementention.Core
+namespace ETLEngine.Implementention.Core
 {
     public class ScenarioContainer : IScenarioContainer
     {
-        private readonly DataFlowProgress dataFlowProgress;
-        private readonly Dictionary<string, DataFlow> dataFlows;
+        private readonly ScenarioProgress _scenarioProgress;
+        private readonly Dictionary<string, Scenario> _dataFlows;
 
-        public ScenarioContainer(DataFlowProgress dataFlowProgress)
+        public ScenarioContainer(ScenarioProgress scenarioProgress)
         {
-            this.dataFlows = new Dictionary<string, DataFlow>();
-            this.dataFlowProgress = dataFlowProgress;
+            this._dataFlows = new Dictionary<string, Scenario>();
+            this._scenarioProgress = scenarioProgress;
         }
 
-        public void CreateDataFlow(IScenario scenario)
+        public void CreateScenario(string scenarioId)
         {
-            if (dataFlows.TryGetValue(scenario.Id, out var _))
+            if (_dataFlows.TryGetValue(scenarioId, out var _))
                 throw new Exception();
 
             var pluginFactory = new PluginFactory();
-            var dataFlowFacade = new DataFlowFacade<IBaseTable, IPlugin, ILink>();
-            var dataFlow = new DataFlow(dataFlowProgress, dataFlowFacade, pluginFactory);
-            dataFlows[scenario.Id] = dataFlow;
+            var scenarioFacade = new DataFlowFacade<IBaseTable, IPlugin, ILink>();
+            var dataFlow = new Scenario(_scenarioProgress, scenarioFacade, pluginFactory);
+            _dataFlows[scenarioId] = dataFlow;
         }
 
-        public DataFlow GetDataFlow(IScenario scenario)
+        public Scenario GetScenario(string scenarioId)
         {
-            if (dataFlows.TryGetValue(scenario.Id, out var dataFlow))
+            if (_dataFlows.TryGetValue(scenarioId, out var dataFlow))
                 return dataFlow;
 
             throw new Exception();

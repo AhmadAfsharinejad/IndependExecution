@@ -12,7 +12,7 @@ namespace ETLEngine.Plugin
         /// <param name="parentOutputsSchemas"></param>
         protected override void CalcRightSide(IEnumerable<Dictionary<string, TableSchema>>? parentOutputsSchemas)
         {
-            foreach (var item in parentOutputsSchemas)
+            foreach (var item in parentOutputsSchemas!)
             {
                 foreach (var item2 in item)
                     RightSide[item2.Key] = item2.Value;

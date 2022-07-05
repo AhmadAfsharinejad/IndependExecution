@@ -1,25 +1,23 @@
-﻿using ETLEngine.Plugin;
-using IndependExecution.Interfaces.Core;
-using IndependExecution.Interfaces.Plugin;
-using IndependExecution.Sample.Plugin;
-using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ETLEngine.Plugin;
+using IndependentExecution.Interfaces.Plugin;
+using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 
-namespace IndependExecution.Sample.Factory
+namespace ETLEngine.Factory
 {
     public class PluginFactory : IPluginFactory
     {
-        public IPlugin GetPlugin(string pluginTypeId, IProgress<NodeStateChange> nodeProgress)
+        public IPlugin GetPlugin(string pluginTypeId, string pluginId, IProgress<NodeStateChange> nodeProgress)
         {
             //TODO
             if (pluginTypeId == "DataTable")
-                return new DataTablePlugin(Guid.NewGuid().ToString(),
+                return new DataTablePlugin(pluginId,
                     new SocketForTest(new SampleMapping(new Dictionary<string, string>() { { "a", "Sample" } })),
                     nodeProgress);
 
             if(pluginTypeId == "SwitchPort")
-                return new SwitchPortPlugin(Guid.NewGuid().ToString(),
+                return new SwitchPortPlugin(pluginId,
                    new SocketForTest(new SampleMapping(new Dictionary<string, string>() { { "a", "Sample" } })),
                    nodeProgress);
 
