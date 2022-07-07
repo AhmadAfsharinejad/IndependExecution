@@ -1,5 +1,4 @@
 ﻿using IndependentExecution.Dto;
-using IndependentExecution.Implementation.Progress;
 using IndependentExecution.Interfaces.Core;
 
 namespace ETLEngine.Implementention.Core
@@ -13,14 +12,14 @@ namespace ETLEngine.Implementention.Core
             _scenarioContainer.CreateScenario(scenarioId);
         }
 
-        public ScenarioStatus GetScenario(string scenarioId)
+        public ScenarioStatus LoadScenario(string scenarioId)
         {
-           return _scenarioContainer.GetScenario(scenarioId).GetDataFlow();
+           return _scenarioContainer.GetScenario(scenarioId).GetScenarioStatus();
         }
 
         public ScenarioMediator(IScenarioContainer scenarioContainer)
         {
-            this._scenarioContainer = scenarioContainer;
+            _scenarioContainer = scenarioContainer;
         }
 
         public void AddPlugin(string scenarioId, AddPluginRequest addPluginRequest)
@@ -38,9 +37,9 @@ namespace ETLEngine.Implementention.Core
             _scenarioContainer.GetScenario(scenarioId).Run(runRequest);
         }
 
-        public IScenarioPluginConfig GetConfig(string scenarioId, string nodeId)
+        public IScenarioPluginConfig GetConfig(string scenarioId, string pluginId)
         {
-            return _scenarioContainer.GetScenario(scenarioId).GetConfig(nodeId);
+            return _scenarioContainer.GetScenario(scenarioId).GetConfig(pluginId);
         }
 
         public void ChangeConfig(string scenarioId, ChangeConfigRequest changeConfigRequest)

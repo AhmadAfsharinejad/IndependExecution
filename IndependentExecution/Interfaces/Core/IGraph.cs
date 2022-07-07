@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using IndependentExecution.Dto;
-using IndependentExecution.Implementation.Progress;
 using IndependentExecution.Interfaces.Plugin;
 
 namespace IndependentExecution.Interfaces.Core
@@ -27,8 +26,8 @@ namespace IndependentExecution.Interfaces.Core
         /// 2- تنظیمات پلاگین ها بعدی را آپدیت کند
         /// 3- لینک هایی متصل به پاتگین را پاک کند و به کلاینت خبر دهد
         /// </summary>
-        /// <param name="node"></param>
-        void RemovePlugin(string nodeId);
+        /// <param name="pluginId"></param>
+        void RemovePlugin(string pluginId);
         
         /// <summary>
         /// 1- استیت پلاگین های بعدی را تغییر دهد
@@ -38,6 +37,6 @@ namespace IndependentExecution.Interfaces.Core
         /// <param name="link"></param>
         void RemoveLink(ILink link);
 
-        void MovePlugins(IList<MoveNodeRequest> nodes);
+        void MovePlugins(IList<MovePluginRequest> plugins);
     }
 }

@@ -1,5 +1,5 @@
-﻿using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 
 namespace ETLEngine.Plugin
 {
@@ -9,7 +9,7 @@ namespace ETLEngine.Plugin
 
         public SampleMapping(Dictionary<string, string> map)
         {
-            this._map = map;
+            _map = map;
         }
         public Dictionary<string, string> GetMap()
         {

@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CS8618
-namespace IndependentExecution.Implementation.Progress
+namespace IndependentExecution.Dto
 {
     public record PluginState
     {

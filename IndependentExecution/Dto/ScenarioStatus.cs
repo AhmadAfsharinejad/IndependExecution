@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace IndependentExecution.Implementation.Progress
+namespace IndependentExecution.Dto
 {
     //TODO staus is good name?
     public record ScenarioStatus
     {
-        public List<PluginStatus> Nodes { get; }
+        public List<PluginStatus> Plugins { get; }
 
         public List<LinkStatus> Links { get; }
         
         public ScenarioStatus()
         {
-            this.Nodes = new List<PluginStatus>();
+            Plugins = new List<PluginStatus>();
             Links = new List<LinkStatus>();
         }
     }

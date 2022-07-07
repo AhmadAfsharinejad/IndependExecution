@@ -11,7 +11,7 @@ namespace IndependentExecution.Sample
 {
     public class DataFlowRunner
     {
-        private List<PluginStatus>? _nodeStatusList;
+        private List<PluginStatus>? _pluginStatusList;
         private List<LinkStatus>? _linkStatusList;
 
         public void Run()
@@ -27,9 +27,9 @@ namespace IndependentExecution.Sample
             var scenarioId = "s1";
             dataFlowMediator.AddScenario(scenarioId);
 
-            Console.WriteLine("--add DataTable node");
+            Console.WriteLine("--add DataTable plugin");
 
-            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest() { Location = "0", TypeId = "DataTable", Id = "DataTable1"});
+            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest { Location = "0", TypeId = "DataTable", Id = "DataTable1"});
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
@@ -40,11 +40,11 @@ namespace IndependentExecution.Sample
             Console.WriteLine("--change DataTable config");
             var dic = new Dictionary<string, List<string>>
             {
-                { "t1", new List<string>() { "c1", "c2" } }
+                { "t1", new List<string> { "c1", "c2" } }
             };
-            dataFlowMediator.ChangeConfig(scenarioId, new ChangeConfigRequest()
+            dataFlowMediator.ChangeConfig(scenarioId, new ChangeConfigRequest
             {
-                Config = new DataTableConfig()
+                Config = new DataTableConfig
                 {
                     Tables = dic
                 },
@@ -52,17 +52,17 @@ namespace IndependentExecution.Sample
             });
 
 
-            Console.WriteLine("--add SwitchPort node");
-            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest() { Location = "1", TypeId = "SwitchPort", Id = "SwitchPort1"});
+            Console.WriteLine("--add SwitchPort plugin");
+            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest { Location = "1", TypeId = "SwitchPort", Id = "SwitchPort1"});
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
             Console.WriteLine("--add DataTable-SwitchPort link");
-            dataFlowMediator.AddLink(scenarioId, new AddLinkRequest()
+            dataFlowMediator.AddLink(scenarioId, new AddLinkRequest
             {
                 SourceId = GetPlugin("DataTable1").Id,
                 TargetId = GetPlugin("SwitchPort1").Id,
-                SourceMapLink = GetPlugin("DataTable1")!.OutputPorts.FirstOrDefault()!.ToString(),
+                SourcePortId = GetPlugin("DataTable1")!.OutputPorts.FirstOrDefault()!.ToString(),
             });
 
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
@@ -72,9 +72,9 @@ namespace IndependentExecution.Sample
             var switchPortConfig = dataFlowMediator.GetConfig(scenarioId, GetPlugin("SwitchPort1").Id);
 
             Console.WriteLine("--change SwitchPort config");
-            dataFlowMediator.ChangeConfig(scenarioId, new ChangeConfigRequest()
+            dataFlowMediator.ChangeConfig(scenarioId, new ChangeConfigRequest
             {
-                Config = new SwitchPortConfig()
+                Config = new SwitchPortConfig
                 {
                     Columns = new List<string> { "c1", "c2" }
                 },
@@ -82,19 +82,19 @@ namespace IndependentExecution.Sample
             });
         
 
-            Console.WriteLine("--run SwitchPort node");
-            dataFlowMediator.Run(scenarioId, new RunRequest() { NodeIds = new List<string>() { _nodeStatusList!.Last().Id } });
+            Console.WriteLine("--run SwitchPort plugin");
+            dataFlowMediator.Run(scenarioId, new RunRequest { PluginIds = new List<string> { _pluginStatusList!.Last().Id } });
         }
 
         private void DataFlowProgress_ProgressChanged(object? sender, ScenarioStatus e)
         {
       
             Console.WriteLine("-----------------------");
-            _nodeStatusList = e.Nodes.ToList();
+            _pluginStatusList = e.Plugins.ToList();
             _linkStatusList = e.Links.ToList();
 
             Console.WriteLine("nodes:");
-            Console.WriteLine(string.Join("\n", e.Nodes.Select(x => x.ToString())));
+            Console.WriteLine(string.Join("\n", e.Plugins.Select(x => x.ToString())));
             Console.WriteLine("links:");
             Console.WriteLine(string.Join("\n", e.Links.Select(x => x.ToString())));
             Console.WriteLine(string.Empty);
@@ -102,7 +102,7 @@ namespace IndependentExecution.Sample
 
         private PluginStatus GetPlugin(string id)
         {
-             return _nodeStatusList!.First(x => x.Id == id);
+             return _pluginStatusList!.First(x => x.Id == id);
         }
     }
 }

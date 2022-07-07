@@ -11,6 +11,6 @@ namespace IndependentExecution.Interfaces.Core
         /// </summary>
         /// <param name="changeConfigRequest"></param>
         void ChangeConfig(ChangeConfigRequest changeConfigRequest);
-        IScenarioPluginConfig GetConfig(string nodeId);
+        IScenarioPluginConfig GetConfig(string pluginId);
     }
 }

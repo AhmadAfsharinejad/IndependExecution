@@ -22,13 +22,13 @@ namespace IndependentExecution.Implementation.Core
             IDataFlowFacade<IBaseTable, IPlugin, ILink> dataFlowFacade,
             IPluginFactory pluginExecutableFactory)
         {
-            this._progress = progress;
-            this._dataFlowFacade = dataFlowFacade;
-            this._pluginFactory = pluginExecutableFactory;
-            this._scenarioStatus = new ScenarioStatus();
-            this._pluginProgress = new PluginStateChangeProgress();
+            _progress = progress;
+            _dataFlowFacade = dataFlowFacade;
+            _pluginFactory = pluginExecutableFactory;
+            _scenarioStatus = new ScenarioStatus();
+            _pluginProgress = new PluginStateChangeProgress();
 
-            this._pluginProgress.ProgressChanged += NodeProgress_ProgressChanged;
+            _pluginProgress.ProgressChanged += PluginProgress_ProgressChanged;
         }
 
         public void AddLink(AddLinkRequest addLinkRequest)
@@ -45,7 +45,7 @@ namespace IndependentExecution.Implementation.Core
             var plugin = _pluginFactory.GetPlugin(addPluginRequest.TypeId, addPluginRequest.Id, _pluginProgress);
             plugin.Location = addPluginRequest.Location;
             _dataFlowFacade.AddNode(plugin);
-            AddNodeToStatus(plugin);
+            AddPluginToStatus(plugin);
             _progress.Report(_scenarioStatus);
 
             return new PluginStatus(plugin.Id) 
@@ -56,7 +56,7 @@ namespace IndependentExecution.Implementation.Core
             };
         }
 
-        public void Cancel(IEnumerable<string> pluginIds)
+        public void Cancel(IList<string> pluginIds)
         {
             throw new NotImplementedException();
         }
@@ -72,30 +72,30 @@ namespace IndependentExecution.Implementation.Core
             plugin.ChangeConfig(changeConfigRequest.Config);
 
             //TODO check links
-            EditNodeToStatus(plugin);
+            EditPluginToStatus(plugin);
             _progress.Report(_scenarioStatus);
         }
 
         public IScenarioPluginConfig GetConfig(string pluginId)
         {
             var config = _dataFlowFacade.GetNode(pluginId).GetConfig();
-            return new ScenarioPluginConfig()
+            return new ScenarioPluginConfig
             {
                 Config = config,
             };
         }
 
-        public ScenarioStatus GetDataFlow()
-        {
-            return _scenarioStatus;
-        }
-
-        public void Invalid(IEnumerable<string> pluginIds)
+        public void Invalid(IList<string> pluginIds)
         {
             throw new NotImplementedException();
         }
 
-        public void Load(string id)
+        public ScenarioStatus GetScenarioStatus()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public ScenarioStatus Load()
         {
             throw new NotImplementedException();
         }
@@ -105,7 +105,7 @@ namespace IndependentExecution.Implementation.Core
             throw new NotImplementedException();
         }
 
-        public void MovePlugins(IList<MoveNodeRequest> plugins)
+        public void MovePlugins(IList<MovePluginRequest> plugins)
         {
             throw new NotImplementedException();
         }
@@ -117,38 +117,52 @@ namespace IndependentExecution.Implementation.Core
 
         public void Run(RunRequest runRequest)
         {
-            foreach (var pluginId in runRequest.NodeIds)
+            foreach (var pluginId in runRequest.PluginIds)
             {
                 //TODO run list id begire
                 _dataFlowFacade.Run(pluginId);
             }
         }
 
+        public void ChangeProcessor(string processorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeExecutor(string executorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RunTimeParametersResponse GetRunTimeParameters(RunRequest runRequest)
+        {
+            throw new NotImplementedException();
+        }
         public void RunAll()
         {
 
         }
 
-        public void Stop(IEnumerable<string> pluginIds)
+        public void Stop(IList<string> pluginIds)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IBaseTable> GetResult(string pluginId)
+        public IList<IBaseTable> GetResult(string pluginId)
         {
             //TODO
             throw new NotImplementedException();
         }
 
-        private void NodeProgress_ProgressChanged(object? sender, NodeStateChange e)
+        private void PluginProgress_ProgressChanged(object? sender, NodeStateChange e)
         {
-            _scenarioStatus.Nodes.First(x => x.Id == e.NodeId).State = e.After.ToString();
+            _scenarioStatus.Plugins.First(x => x.Id == e.NodeId).State = e.After.ToString();
             _progress.Report(_scenarioStatus);
         }
 
-        private void AddNodeToStatus(IPlugin plugin)
+        private void AddPluginToStatus(IPlugin plugin)
         {
-            _scenarioStatus.Nodes.Add(new PluginStatus(plugin.Id)
+            _scenarioStatus.Plugins.Add(new PluginStatus(plugin.Id)
             {
                 State = "Idle",
                 InputPorts = plugin.Inputs,
@@ -156,9 +170,9 @@ namespace IndependentExecution.Implementation.Core
             });
         }
 
-        private void EditNodeToStatus(IPlugin plugin)
+        private void EditPluginToStatus(IPlugin plugin)
         {
-            var pluginStatus = _scenarioStatus.Nodes.First(x => x.Id == plugin.Id);
+            var pluginStatus = _scenarioStatus.Plugins.First(x => x.Id == plugin.Id);
 
             pluginStatus.InputPorts = plugin.Inputs;
             pluginStatus.OutputPorts = plugin.Outputs;
@@ -166,11 +180,13 @@ namespace IndependentExecution.Implementation.Core
 
         private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)
         {
-            _scenarioStatus.Links.Add(new LinkStatus(linkId,
-                addLinkRequest.SourceId,
-                addLinkRequest.TargetId,
-                addLinkRequest.SourceMapLink,
-                addLinkRequest.TargetMapLink));
+            _scenarioStatus.Links.Add(new LinkStatus
+            {
+                SourceId = addLinkRequest.SourceId,
+                TargetId = addLinkRequest.TargetId,
+                SourcePortId = addLinkRequest.SourcePortId,
+                TargetPortId = addLinkRequest.TargetPortId
+            });
         }
 
         private string GenerateLinkId()

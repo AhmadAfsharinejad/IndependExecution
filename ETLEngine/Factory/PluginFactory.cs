@@ -13,12 +13,12 @@ namespace ETLEngine.Factory
             //TODO
             if (pluginTypeId == "DataTable")
                 return new DataTablePlugin(pluginId,
-                    new SocketForTest(new SampleMapping(new Dictionary<string, string>() { { "a", "Sample" } })),
+                    new SocketForTest(new SampleMapping(new Dictionary<string, string> { { "a", "Sample" } })),
                     nodeProgress);
 
             if(pluginTypeId == "SwitchPort")
                 return new SwitchPortPlugin(pluginId,
-                   new SocketForTest(new SampleMapping(new Dictionary<string, string>() { { "a", "Sample" } })),
+                   new SocketForTest(new SampleMapping(new Dictionary<string, string> { { "a", "Sample" } })),
                    nodeProgress);
 
             throw new NotSupportedException();

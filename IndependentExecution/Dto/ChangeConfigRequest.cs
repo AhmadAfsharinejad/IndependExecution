@@ -1,4 +1,5 @@
 ﻿using IndependentExecution.Interfaces.Plugin;
+
 #pragma warning disable CS8618
 
 namespace IndependentExecution.Dto

@@ -1,3 +1,15 @@
 ﻿TODO
 tabe haye custom chejori run mishand? mesle gettable to dataflow
 note ha chi mishand?? plugin note 
+-chejori mifahmand ke plugin ghabli taghir karde? --> piade sazi shand (manager?)
+-dispose chejori mishand? --> piade sazi shand
+-ba ras moghayese she
+-zakhir movaghat ro 1 bar dge ba ham brim
+-esme plugin taghir kard khabr bede --> plugin hamgam saz --> ezafe she
+-update dynamic parameter -- piadesazi she
+
+
+
+
+-stongid ha estefade shand
+-

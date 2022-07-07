@@ -1,4 +1,4 @@
-﻿using IndependentExecution.Implementation.Progress;
+﻿using IndependentExecution.Dto;
 
 namespace IndependentExecution.Interfaces.Core
 {
@@ -7,6 +7,16 @@ namespace IndependentExecution.Interfaces.Core
         IScenarioConfigurable,
         IGraph
     {
-        ScenarioStatus GetDataFlow();
+        /// <summary>
+        /// 1- از طریق کلاینت دیگری باز شود
+        /// </summary>
+        /// <returns></returns>
+        ScenarioStatus GetScenarioStatus();
+        
+        /// <summary>
+        /// 1- اولین بار که از طریق لیست باز میشود
+        /// </summary>
+        /// <returns></returns>
+        ScenarioStatus Load();
     }
 }

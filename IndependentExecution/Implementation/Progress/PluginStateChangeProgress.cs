@@ -1,5 +1,5 @@
-﻿using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
-using System;
+﻿using System;
+using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 
 namespace IndependentExecution.Implementation.Progress
 {

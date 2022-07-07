@@ -1,4 +1,5 @@
 ﻿using System;
+using IndependentExecution.Dto;
 
 namespace IndependentExecution.Implementation.Progress
 {

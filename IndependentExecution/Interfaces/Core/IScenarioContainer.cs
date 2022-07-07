@@ -6,5 +6,6 @@ namespace IndependentExecution.Interfaces.Core
     {
         Scenario GetScenario(string scenarioId);
         void CreateScenario(string scenarioId);
+        void LoadScenario(string scenarioId);
     }
 }

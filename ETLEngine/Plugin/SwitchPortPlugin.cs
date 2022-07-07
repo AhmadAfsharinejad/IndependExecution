@@ -1,13 +1,14 @@
-﻿using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
-using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
-using Mohaymen.DataFlowManagement.Plugin;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using IndependentExecution.Dto.Link;
+using IndependentExecution.Dto;
 using IndependentExecution.Interfaces.Core;
 using IndependentExecution.Interfaces.Plugin;
+using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
+using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
+using Mohaymen.DataFlowManagement.Plugin;
+
 #pragma warning disable CS8618
 
 namespace ETLEngine.Plugin
@@ -20,8 +21,8 @@ namespace ETLEngine.Plugin
 
         public IPluginConfigurable Plugin { get; set; }
 
-        public List<IInputPort> Inputs { get; private set; }
-        public List<IOutputPort> Outputs { get; private set; }
+        public List<Port> Inputs { get; set; }
+        public List<Port> Outputs { get; set; }
 
         private readonly SwitchPortConfig _config;
 
@@ -31,8 +32,8 @@ namespace ETLEngine.Plugin
         {
             _config = new SwitchPortConfig();
 
-            this.Inputs = new List<IInputPort> (){ new FinitePort() { MaxPort = 1 }};
-            this.Outputs = new List<IOutputPort> (){new OutPort()};
+            Inputs = new List<Port> { new Port() };
+            Outputs = new List<Port> { new Port() };
         }
 
         public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable>? input,

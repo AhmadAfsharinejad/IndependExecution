@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using IndependentExecution.Dto.Link;
+
 #pragma warning disable CS8618
 
-namespace IndependentExecution.Implementation.Progress
+namespace IndependentExecution.Dto
 {
+    //TODO esme behtar , farghesh ba PluginDetails malom she
     public record PluginStatus
     {
         public PluginStatus(string id)
@@ -11,10 +12,11 @@ namespace IndependentExecution.Implementation.Progress
             Id = id;
         }
 
-        public string Id { get; }
+        public string Id { get; init;}
+        //TODO lazeme
         public string State { get; set; }
-        public List<IInputPort> InputPorts { get; set; }
-        public List<IOutputPort> OutputPorts { get; set; }
+        public List<Port> InputPorts { get; set; }
+        public List<Port> OutputPorts { get; set; }
 
         public override string ToString()
         {

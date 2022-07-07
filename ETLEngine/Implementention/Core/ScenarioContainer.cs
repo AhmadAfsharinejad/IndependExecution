@@ -16,8 +16,8 @@ namespace ETLEngine.Implementention.Core
 
         public ScenarioContainer(ScenarioProgress scenarioProgress)
         {
-            this._dataFlows = new Dictionary<string, Scenario>();
-            this._scenarioProgress = scenarioProgress;
+            _dataFlows = new Dictionary<string, Scenario>();
+            _scenarioProgress = scenarioProgress;
         }
 
         public void CreateScenario(string scenarioId)
@@ -29,6 +29,11 @@ namespace ETLEngine.Implementention.Core
             var scenarioFacade = new DataFlowFacade<IBaseTable, IPlugin, ILink>();
             var dataFlow = new Scenario(_scenarioProgress, scenarioFacade, pluginFactory);
             _dataFlows[scenarioId] = dataFlow;
+        }
+
+        public void LoadScenario(string scenarioId)
+        {
+            throw new NotImplementedException();
         }
 
         public Scenario GetScenario(string scenarioId)

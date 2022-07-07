@@ -21,10 +21,10 @@ namespace IndependentExecution.Interfaces.Plugin
 
         public Link(string id, IPlugin source, IPlugin target)
         {
-            this.Id = id;
-            this.Source = source;
-            this.Target = target;
-            this.Filter = new List<string>();
+            Id = id;
+            Source = source;
+            Target = target;
+            Filter = new List<string>();
         }
     }
 }

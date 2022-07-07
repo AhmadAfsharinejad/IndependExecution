@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using IndependentExecution.Dto.Link;
+using IndependentExecution.Dto;
 
 namespace IndependentExecution.Interfaces.Plugin
 {
     public interface IPlugin : IPluginConfigurable
     {
-        public string TypeId { get; }
-        public string Location { get; set; }
+        public string TypeId { get;  }
+        public string Location { get; set;}
         public string Note { get; set; }
-        public List<IInputPort> Inputs { get;  }
-        public List<IOutputPort> Outputs { get; }
+        public List<Port> Inputs { get;  set;}
+        public List<Port> Outputs { get; set;}
     }
 }

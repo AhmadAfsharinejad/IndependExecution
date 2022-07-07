@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using IndependentExecution.Dto.Link;
+using IndependentExecution.Dto;
 using IndependentExecution.Interfaces.Core;
 using IndependentExecution.Interfaces.Plugin;
 using Mohaymen.DataFlowExecutor.Core.Core.Graph.Elements;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 using Mohaymen.DataFlowManagement.Plugin;
+
 #pragma warning disable CS8618
 
 namespace ETLEngine.Plugin
@@ -20,9 +21,8 @@ namespace ETLEngine.Plugin
 
         public IPluginConfigurable Plugin { get; set; }
 
-        public List<IInputPort> Inputs { get; private set; }
-        private List<IOutputPort> _outputs;
-        public List<IOutputPort> Outputs { get { return _outputs; } }
+        public List<Port> Inputs { get; set; }
+        public List<Port> Outputs{ get; set; }
 
         private readonly DataTableConfig _config;
 
@@ -31,8 +31,8 @@ namespace ETLEngine.Plugin
         {
             _config = new DataTableConfig();
 
-            this.Inputs = new List<IInputPort>(){ new NonePort()};
-            this._outputs =new List<IOutputPort>(){ new MultipleSpecificPort()};
+            Inputs = new List<Port> { new Port()};
+            Outputs =new List<Port> { new Port()};
         }
 
         public override Task<Dictionary<string, IBaseTable>> ExecuteAsync(Dictionary<string, IBaseTable>? input,
@@ -52,12 +52,10 @@ namespace ETLEngine.Plugin
         {
             var dt = config as DataTableConfig;
 
-            this._outputs.Clear();
+            Outputs.Clear();
             foreach (var item in dt!.Tables)
             {
-                this._outputs.Add(new OutPort()
-                {
-                });
+                Outputs.Add(new Port());
             }
         }
     }
