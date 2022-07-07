@@ -27,7 +27,7 @@ namespace IndependentExecution.Interfaces.Core
         /// 3- لینک هایی متصل به پاتگین را پاک کند و به کلاینت خبر دهد
         /// </summary>
         /// <param name="pluginId"></param>
-        void RemovePlugin(string pluginId);
+        void RemovePlugin(PluginId pluginId);
         
         /// <summary>
         /// 1- استیت پلاگین های بعدی را تغییر دهد
@@ -35,11 +35,11 @@ namespace IndependentExecution.Interfaces.Core
         /// 3- لینک را حذف کند و به کلاینت خبر دهد
         /// </summary>
         /// <param name="link"></param>
-        void RemoveLink(ILink link);
+        void RemoveLink(LinkId linkId);
 
         void MovePlugins(IList<MovePluginRequest> plugins);
 
-        void ChangeNote(string pluginId, string? note);
-        void ChangeLabel(string pluginId, string? label);
+        void ChangeNote(PluginId pluginId, string? note);
+        void ChangeLabel(PluginId pluginId, string? label);
     }
 }

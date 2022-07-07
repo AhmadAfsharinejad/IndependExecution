@@ -33,10 +33,10 @@ namespace IndependentExecution.Implementation.Core
 
         public void AddLink(AddLinkRequest addLinkRequest)
         {
-            var linkId = GenerateLinkId();
-            var link = new Link(linkId, _dataFlowFacade.GetNode(addLinkRequest.SourceId), _dataFlowFacade.GetNode(addLinkRequest.TargetId));/*, TODO fix maplinks*/
+            var link = new Link(addLinkRequest.Id, _dataFlowFacade.GetNode(addLinkRequest.SourceId.ToString()),
+                _dataFlowFacade.GetNode(addLinkRequest.TargetId.ToString())); /*, TODO fix maplinks*/
             _dataFlowFacade.AddLink(link);
-            AddLinkStatuses(addLinkRequest, linkId);
+            AddLinkStatuses(addLinkRequest, addLinkRequest.Id);
             _progress.Report(_scenarioStatus);
         }
 
@@ -49,17 +49,17 @@ namespace IndependentExecution.Implementation.Core
             AddPluginToStatus(plugin);
             _progress.Report(_scenarioStatus);
 
-            return new AddPluginResponse() 
+            return new AddPluginResponse()
             {
-                Id =  plugin.Id,
-                InputPorts = plugin.Inputs,
-                OutputPorts = plugin.Outputs,
+                Id = addPluginRequest.Id,
                 TypeId = addPluginRequest.TypeId,
                 Location = addPluginRequest.Location,
+                InputPorts = plugin.Inputs,
+                OutputPorts = plugin.Outputs,
             };
         }
 
-        public void Cancel(IList<string> pluginIds)
+        public void Cancel(IList<PluginId> pluginIds)
         {
             throw new NotImplementedException();
         }
@@ -71,7 +71,7 @@ namespace IndependentExecution.Implementation.Core
 
         public void ChangeConfig(ChangeConfigRequest changeConfigRequest)
         {
-            var plugin = _dataFlowFacade.GetNode(changeConfigRequest.PluginId);
+            var plugin = _dataFlowFacade.GetNode(changeConfigRequest.PluginId.ToString());
             plugin.ChangeConfig(changeConfigRequest.Config);
 
             //TODO check links
@@ -79,20 +79,20 @@ namespace IndependentExecution.Implementation.Core
             _progress.Report(_scenarioStatus);
         }
 
-        public IScenarioPluginConfig GetConfig(string pluginId)
+        public IScenarioPluginConfig GetConfig(PluginId pluginId)
         {
-            var config = _dataFlowFacade.GetNode(pluginId).GetConfig();
+            var config = _dataFlowFacade.GetNode(pluginId.ToString()).GetConfig();
             return new ScenarioPluginConfig
             {
                 Config = config,
             };
         }
 
-        public void Invalid(IList<string> pluginIds)
+        public void Invalid(IList<PluginId> pluginIds)
         {
             throw new NotImplementedException();
         }
-        
+
         public void InvalidAll()
         {
             throw new NotImplementedException();
@@ -102,13 +102,13 @@ namespace IndependentExecution.Implementation.Core
         {
             throw new NotImplementedException();
         }
-        
+
         public ScenarioStatus Load()
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveLink(ILink link)
+        public void RemoveLink(LinkId linkId)
         {
             throw new NotImplementedException();
         }
@@ -118,18 +118,18 @@ namespace IndependentExecution.Implementation.Core
             throw new NotImplementedException();
         }
 
-        public void ChangeNote(string pluginId, string? note)
+        public void ChangeNote(PluginId pluginId, string? note)
         {
             throw new NotImplementedException();
         }
 
-        public void ChangeLabel(string pluginId, string? label)
+        public void ChangeLabel(PluginId pluginId, string? label)
         {
             //todo plugin hamghamsaz ino bayad befahme
             throw new NotImplementedException();
         }
 
-        public void RemovePlugin(string pluginId)
+        public void RemovePlugin(PluginId pluginId)
         {
             throw new NotImplementedException();
         }
@@ -139,16 +139,16 @@ namespace IndependentExecution.Implementation.Core
             foreach (var pluginId in runRequest.PluginIds)
             {
                 //TODO run list id begire
-                _dataFlowFacade.Run(pluginId);
+                _dataFlowFacade.Run(pluginId.ToString());
             }
         }
 
-        public void ChangeProcessor(string processorId)
+        public void ChangeProcessor(ProcessorId processorId)
         {
             throw new NotImplementedException();
         }
 
-        public void ChangeExecutor(string executorId)
+        public void ChangeExecutor(ExecutorId executorId)
         {
             throw new NotImplementedException();
         }
@@ -157,12 +157,12 @@ namespace IndependentExecution.Implementation.Core
         {
             throw new NotImplementedException();
         }
+
         public void RunAll()
         {
-
         }
 
-        public void Stop(IList<string> pluginIds)
+        public void Stop(IList<PluginId> pluginIds)
         {
             throw new NotImplementedException();
         }
@@ -171,15 +171,15 @@ namespace IndependentExecution.Implementation.Core
         {
             throw new NotImplementedException();
         }
-        
-        public IList<IBaseTable> GetResult(string pluginId)
+
+        public IList<IBaseTable> GetResult(PluginId pluginId)
         {
             throw new NotImplementedException();
         }
 
         private void PluginProgress_ProgressChanged(object? sender, NodeStateChange e)
         {
-            _scenarioStatus.Plugins.First(x => x.Id == e.NodeId).State = e.After.ToString();
+            _scenarioStatus.Plugins.First(x => x.Id.ToString() == e.NodeId).State = e.After.ToString();
             _progress.Report(_scenarioStatus);
         }
 
@@ -187,7 +187,7 @@ namespace IndependentExecution.Implementation.Core
         {
             _scenarioStatus.Plugins.Add(new PluginStatus
             {
-                Id = plugin.Id,
+                Id = new PluginId(plugin.Id),
                 TypeId = plugin.TypeId,
                 Location = plugin.Location,
                 State = "Idle",
@@ -198,26 +198,22 @@ namespace IndependentExecution.Implementation.Core
 
         private void EditPluginToStatus(IPlugin plugin)
         {
-            var pluginStatus = _scenarioStatus.Plugins.First(x => x.Id == plugin.Id);
+            var pluginStatus = _scenarioStatus.Plugins.First(x => x.Id.ToString() == plugin.Id);
 
             pluginStatus.InputPorts = plugin.Inputs;
             pluginStatus.OutputPorts = plugin.Outputs;
         }
 
-        private void AddLinkStatuses(AddLinkRequest addLinkRequest, string linkId)
+        private void AddLinkStatuses(AddLinkRequest addLinkRequest, LinkId linkId)
         {
             _scenarioStatus.Links.Add(new LinkStatus
             {
+                Id = linkId,
                 SourceId = addLinkRequest.SourceId,
                 TargetId = addLinkRequest.TargetId,
                 SourcePortId = addLinkRequest.SourcePortId,
                 TargetPortId = addLinkRequest.TargetPortId
             });
-        }
-
-        private string GenerateLinkId()
-        {
-            return Guid.NewGuid().ToString();
         }
     }
 }

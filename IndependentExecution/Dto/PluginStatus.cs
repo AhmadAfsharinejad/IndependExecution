@@ -6,8 +6,8 @@ namespace IndependentExecution.Dto
 {
     public record PluginStatus
     {
-        public string Id { get; init; }
-        public string TypeId { get; init; }
+        public PluginId Id { get; init; }
+        public PluginTypeId TypeId { get; init; }
         public string Location { get; set; }
         public string State { get; set; }
         public List<Port> InputPorts { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System;
+using IndependentExecution.Dto;
 using Mohaymen.DataFlowExecutor.Core.Graph.Progress;
 
 namespace IndependentExecution.Interfaces.Plugin
 {
     public interface IPluginFactory
     {
-        IPlugin GetPlugin(string pluginTypeId, string pluginId, IProgress<NodeStateChange> nodeProgress);
+        IPlugin GetPlugin(PluginTypeId pluginTypeId, PluginId pluginId, IProgress<NodeStateChange> nodeProgress);
     }
 }

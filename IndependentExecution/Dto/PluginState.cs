@@ -3,7 +3,7 @@ namespace IndependentExecution.Dto
 {
     public record PluginState
     {
-        public string Id { get; }
+        public PluginId Id { get; }
         public string State { get; }
     }
 }

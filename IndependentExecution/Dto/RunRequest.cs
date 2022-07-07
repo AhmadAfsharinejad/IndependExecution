@@ -6,6 +6,6 @@ namespace IndependentExecution.Dto
 {
     public record RunRequest
     {
-        public List<string> PluginIds { get; set; }
+        public List<PluginId> PluginIds { get; set; }
     }
 }

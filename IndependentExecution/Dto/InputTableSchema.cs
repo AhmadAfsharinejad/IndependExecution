@@ -1,16 +1,11 @@
 ﻿using System.Collections.Generic;
+#pragma warning disable CS8618
 
 namespace IndependentExecution.Dto
 {
     public record InputTableSchema
     {
-        public InputTableSchema(List<ColumnSchema> columns, string id)
-        {
-            Columns = columns;
-            Id = id;
-        }
-
-        private string Id { get; init; }
-        List<ColumnSchema> Columns { get; }
+        private TableSchemaId Id { get; init; }
+        private List<ColumnSchema> Columns { get; set; }
     }
 }

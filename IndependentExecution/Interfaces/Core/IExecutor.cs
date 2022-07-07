@@ -5,16 +5,16 @@ namespace IndependentExecution.Interfaces.Core
 {
     public interface IExecutor
     {
-        void ChangeProcessor(string processorId);
-        void ChangeExecutor(string executorId);
+        void ChangeProcessor(ProcessorId processorId);
+        void ChangeExecutor(ExecutorId executorId);
         RunTimeParametersResponse GetRunTimeParameters(RunRequest runRequest);
         void RunAll();
         void CancelAll();
         void Run(RunRequest runRequest);
-        void Cancel(IList<string> pluginIds);
-        void Invalid(IList<string> pluginIds);
+        void Cancel(IList<PluginId> pluginIds);
+        void Invalid(IList<PluginId> pluginIds);
         void InvalidAll();
-        void Stop(IList<string> pluginIds);
+        void Stop(IList<PluginId> pluginIds);
         void StopAll();
         
         /// <summary>
@@ -23,6 +23,6 @@ namespace IndependentExecution.Interfaces.Core
         /// </summary>
         /// <param name="pluginId"></param>
         /// <returns></returns>
-        IList<IBaseTable> GetResult(string pluginId);
+        IList<IBaseTable> GetResult(PluginId pluginId);
     }
 }

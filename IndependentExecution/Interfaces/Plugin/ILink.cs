@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using IndependentExecution.Dto;
 using IndependentExecution.Interfaces.Core;
 using Mohaymen.DataFlowExecutor.Core.Graph.Elements;
 
 namespace IndependentExecution.Interfaces.Plugin
 {
+    //TODO interface niaze?
     public interface ILink : ILink<IBaseTable>
     {
 
@@ -19,9 +21,9 @@ namespace IndependentExecution.Interfaces.Plugin
 
         public string Id { get; }
 
-        public Link(string id, IPlugin source, IPlugin target)
+        public Link(LinkId id, IPlugin source, IPlugin target)
         {
-            Id = id;
+            Id = id.ToString();
             Source = source;
             Target = target;
             Filter = new List<string>();

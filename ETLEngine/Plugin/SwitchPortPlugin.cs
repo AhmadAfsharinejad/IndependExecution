@@ -15,7 +15,7 @@ namespace ETLEngine.Plugin
 {
     public class SwitchPortPlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
-        public string TypeId => "SwitchPort";
+        public PluginTypeId TypeId => new PluginTypeId("SwitchPort");
         public string Location { get; set; }
         public string Note { get; set; }
 
@@ -27,8 +27,8 @@ namespace ETLEngine.Plugin
         private readonly SwitchPortConfig _config;
 
 
-        public SwitchPortPlugin(string id, Socket socket, IProgress<NodeStateChange>? progress = null)
-            : base(id, socket, progress)
+        public SwitchPortPlugin(PluginId id, Socket socket, IProgress<NodeStateChange>? progress = null)
+            : base(id.ToString(), socket, progress)
         {
             _config = new SwitchPortConfig();
 

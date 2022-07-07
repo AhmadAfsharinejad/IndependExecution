@@ -15,7 +15,7 @@ namespace ETLEngine.Plugin
 {
     public class DataTablePlugin : ConstantSchemaPlugin<IBaseTable>, IPlugin
     {
-        public string TypeId => "DataTable";
+        public PluginTypeId TypeId => new PluginTypeId("DataTable");
         public string Location { get; set; }
         public string Note { get; set; }
 
@@ -26,8 +26,8 @@ namespace ETLEngine.Plugin
 
         private readonly DataTableConfig _config;
 
-        public DataTablePlugin(string id, Socket socket, IProgress<NodeStateChange>? progress = null)
-            : base(id, socket, progress)
+        public DataTablePlugin(PluginId id, Socket socket, IProgress<NodeStateChange>? progress = null)
+            : base(id.ToString(), socket, progress)
         {
             _config = new DataTableConfig();
 

@@ -24,18 +24,18 @@ namespace IndependentExecution.Sample
             dataFlowProgress.ProgressChanged += DataFlowProgress_ProgressChanged;
 
 
-            var scenarioId = "s1";
+            var scenarioId = new ScenarioId("s1") ;
             dataFlowMediator.AddScenario(scenarioId);
 
             Console.WriteLine("--add DataTable plugin");
 
-            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest { Location = "0", TypeId = "DataTable", Id = "DataTable1"});
+            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest { Location = "0", TypeId = new PluginTypeId("DataTable") , Id = new PluginId("DataTable1") });
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
             Console.WriteLine("--get DataTable config");
 
-            var dataTableConfig = dataFlowMediator.GetConfig(scenarioId, GetPlugin("DataTable1").Id);
+            var dataTableConfig = dataFlowMediator.GetConfig(scenarioId, GetPlugin(new PluginId("DataTable1")).Id);
 
             Console.WriteLine("--change DataTable config");
             var dic = new Dictionary<string, List<string>>
@@ -48,28 +48,29 @@ namespace IndependentExecution.Sample
                 {
                     Tables = dic
                 },
-                PluginId = GetPlugin("DataTable1").Id,
+                PluginId = GetPlugin(new PluginId("DataTable1")).Id,
             });
 
 
             Console.WriteLine("--add SwitchPort plugin");
-            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest { Location = "1", TypeId = "SwitchPort", Id = "SwitchPort1"});
+            dataFlowMediator.AddPlugin(scenarioId, new AddPluginRequest { Location = "1", TypeId = new PluginTypeId("SwitchPort") , Id = new PluginId( "SwitchPort1")});
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
             Console.WriteLine("--add DataTable-SwitchPort link");
             dataFlowMediator.AddLink(scenarioId, new AddLinkRequest
             {
-                SourceId = GetPlugin("DataTable1").Id,
-                TargetId = GetPlugin("SwitchPort1").Id,
-                SourcePortId = GetPlugin("DataTable1")!.OutputPorts.FirstOrDefault()!.ToString(),
+                Id = new LinkId($"{Guid.NewGuid()}"),
+                SourceId = GetPlugin(new PluginId("DataTable1")).Id,
+                TargetId = GetPlugin(new PluginId("SwitchPort1")).Id,
+                SourcePortId = GetPlugin(new PluginId("DataTable1"))!.OutputPorts.FirstOrDefault()?.Id,
             });
 
             Task.Delay(TimeSpan.FromMilliseconds(200)).Wait();
 
 
             Console.WriteLine("--get SwitchPort config");
-            var switchPortConfig = dataFlowMediator.GetConfig(scenarioId, GetPlugin("SwitchPort1").Id);
+            var switchPortConfig = dataFlowMediator.GetConfig(scenarioId, GetPlugin( new PluginId("SwitchPort1")).Id);
 
             Console.WriteLine("--change SwitchPort config");
             dataFlowMediator.ChangeConfig(scenarioId, new ChangeConfigRequest
@@ -78,12 +79,12 @@ namespace IndependentExecution.Sample
                 {
                     Columns = new List<string> { "c1", "c2" }
                 },
-                PluginId = GetPlugin("SwitchPort1").Id,
+                PluginId = GetPlugin( new PluginId("SwitchPort1")).Id,
             });
         
 
             Console.WriteLine("--run SwitchPort plugin");
-            dataFlowMediator.Run(scenarioId, new RunRequest { PluginIds = new List<string> { _pluginStatusList!.Last().Id } });
+            dataFlowMediator.Run(scenarioId, new RunRequest { PluginIds = new List<PluginId> { _pluginStatusList!.Last().Id } });
         }
 
         private void DataFlowProgress_ProgressChanged(object? sender, ScenarioStatus e)
@@ -100,7 +101,7 @@ namespace IndependentExecution.Sample
             Console.WriteLine(string.Empty);
         }
 
-        private PluginStatus GetPlugin(string id)
+        private PluginStatus GetPlugin(PluginId id)
         {
              return _pluginStatusList!.First(x => x.Id == id);
         }

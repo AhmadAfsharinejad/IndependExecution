@@ -3,8 +3,8 @@ namespace IndependentExecution.Dto
 {
     public record AddPluginRequest
     {
-        public string Id { get; set; }
-        public string TypeId { get; set; }
+        public PluginId Id { get; set; }
+        public PluginTypeId TypeId { get; set; }
         public string Location { get; set; }
     }
 }

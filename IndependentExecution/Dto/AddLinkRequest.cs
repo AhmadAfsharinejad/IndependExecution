@@ -4,9 +4,10 @@ namespace IndependentExecution.Dto
 {
     public record AddLinkRequest
     {
-        public string SourceId { get; init; }
-        public string? SourcePortId { get; init; }
-        public string TargetId { get; init; }
-        public string? TargetPortId { get; init; }
+        public LinkId Id { get; init; }
+        public PluginId SourceId { get; init; }
+        public PortId? SourcePortId { get; init; }
+        public PluginId TargetId { get; init; }
+        public PortId? TargetPortId { get; init; }
     }
 }
