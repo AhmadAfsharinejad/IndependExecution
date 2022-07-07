@@ -6,7 +6,7 @@ namespace IndependentExecution.Dto
 {
     public record ChangeConfigRequest
     {
-        public string PluginId { get; set; }
-        public IPluginConfig Config { get; set; }
+        public string PluginId { get; init; }
+        public IPluginConfig Config { get; init; }
     }
 }

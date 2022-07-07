@@ -40,7 +40,8 @@ namespace IndependentExecution.Implementation.Core
             _progress.Report(_scenarioStatus);
         }
 
-        public PluginStatus AddPlugin(AddPluginRequest addPluginRequest)
+        //TODO bayad response bede? - engine bayad be client bege ke plugin va link ezafe shudnad?
+        public AddPluginResponse AddPlugin(AddPluginRequest addPluginRequest)
         {
             var plugin = _pluginFactory.GetPlugin(addPluginRequest.TypeId, addPluginRequest.Id, _pluginProgress);
             plugin.Location = addPluginRequest.Location;
@@ -48,11 +49,13 @@ namespace IndependentExecution.Implementation.Core
             AddPluginToStatus(plugin);
             _progress.Report(_scenarioStatus);
 
-            return new PluginStatus(plugin.Id) 
+            return new AddPluginResponse() 
             {
-                State = plugin.State.ToString(),
+                Id =  plugin.Id,
                 InputPorts = plugin.Inputs,
                 OutputPorts = plugin.Outputs,
+                TypeId = addPluginRequest.TypeId,
+                Location = addPluginRequest.Location,
             };
         }
 
@@ -89,6 +92,11 @@ namespace IndependentExecution.Implementation.Core
         {
             throw new NotImplementedException();
         }
+        
+        public void InvalidAll()
+        {
+            throw new NotImplementedException();
+        }
 
         public ScenarioStatus GetScenarioStatus()
         {
@@ -107,6 +115,17 @@ namespace IndependentExecution.Implementation.Core
 
         public void MovePlugins(IList<MovePluginRequest> plugins)
         {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeNote(string pluginId, string? note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeLabel(string pluginId, string? label)
+        {
+            //todo plugin hamghamsaz ino bayad befahme
             throw new NotImplementedException();
         }
 
@@ -148,9 +167,13 @@ namespace IndependentExecution.Implementation.Core
             throw new NotImplementedException();
         }
 
+        public void StopAll()
+        {
+            throw new NotImplementedException();
+        }
+        
         public IList<IBaseTable> GetResult(string pluginId)
         {
-            //TODO
             throw new NotImplementedException();
         }
 
@@ -162,8 +185,11 @@ namespace IndependentExecution.Implementation.Core
 
         private void AddPluginToStatus(IPlugin plugin)
         {
-            _scenarioStatus.Plugins.Add(new PluginStatus(plugin.Id)
+            _scenarioStatus.Plugins.Add(new PluginStatus
             {
+                Id = plugin.Id,
+                TypeId = plugin.TypeId,
+                Location = plugin.Location,
                 State = "Idle",
                 InputPorts = plugin.Inputs,
                 OutputPorts = plugin.Outputs,

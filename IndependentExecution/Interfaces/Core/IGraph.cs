@@ -11,7 +11,7 @@ namespace IndependentExecution.Interfaces.Core
         /// 2- به کلاینت خبر دهد
         /// </summary>
         /// <param name="addPluginRequest"></param>
-        PluginStatus AddPlugin(AddPluginRequest addPluginRequest);
+        AddPluginResponse AddPlugin(AddPluginRequest addPluginRequest);
         
         /// <summary>
         /// 1- لینک از میدا به مقصد اضافه میشود
@@ -38,5 +38,8 @@ namespace IndependentExecution.Interfaces.Core
         void RemoveLink(ILink link);
 
         void MovePlugins(IList<MovePluginRequest> plugins);
+
+        void ChangeNote(string pluginId, string? note);
+        void ChangeLabel(string pluginId, string? label);
     }
 }

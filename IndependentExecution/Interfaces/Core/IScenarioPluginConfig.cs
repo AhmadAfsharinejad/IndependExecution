@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IndependentExecution.Dto;
 using IndependentExecution.Interfaces.Plugin;
 
 namespace IndependentExecution.Interfaces.Core

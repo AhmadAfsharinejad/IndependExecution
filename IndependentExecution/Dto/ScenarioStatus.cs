@@ -2,7 +2,6 @@
 
 namespace IndependentExecution.Dto
 {
-    //TODO staus is good name?
     public record ScenarioStatus
     {
         public List<PluginStatus> Plugins { get; }

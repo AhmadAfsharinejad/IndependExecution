@@ -13,16 +13,16 @@ namespace IndependentExecution.Interfaces.Core
         void Run(RunRequest runRequest);
         void Cancel(IList<string> pluginIds);
         void Invalid(IList<string> pluginIds);
+        void InvalidAll();
         void Stop(IList<string> pluginIds);
+        void StopAll();
+        
         /// <summary>
         /// 1- در پلاگین هایی مثل ذخیره موقت استفاده دارد
         /// 2- نتیجه اجرا به سمت انجین برمی گرداند تا بتوان از آن دیتاتیبل ساخت
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="pluginId"></param>
         /// <returns></returns>
         IList<IBaseTable> GetResult(string pluginId);
-
-        //Tabe haye dge chejori mishand?
-        //melse gettable dataflow
     }
 }

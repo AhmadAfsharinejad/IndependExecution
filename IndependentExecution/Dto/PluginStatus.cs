@@ -4,16 +4,11 @@
 
 namespace IndependentExecution.Dto
 {
-    //TODO esme behtar , farghesh ba PluginDetails malom she
     public record PluginStatus
     {
-        public PluginStatus(string id)
-        {
-            Id = id;
-        }
-
-        public string Id { get; init;}
-        //TODO lazeme
+        public string Id { get; init; }
+        public string TypeId { get; init; }
+        public string Location { get; set; }
         public string State { get; set; }
         public List<Port> InputPorts { get; set; }
         public List<Port> OutputPorts { get; set; }
